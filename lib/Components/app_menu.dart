@@ -1,58 +1,60 @@
 import 'package:flutter/material.dart';
 
 class DisplayableMenu extends StatelessWidget {
+  const DisplayableMenu({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
         children: <Widget>[
-          DrawerHeader(
+          const DrawerHeader(
             child: Text('Your App Name'),
           ),
           ListTile(
-            leading: Icon(Icons.chat),
-            title: Text('Chat'),
+            leading: const Icon(Icons.chat),
+            title: const Text('Chat'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ChatScreen(),
+                  builder: (context) => const ChatScreen(),
                 ),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.notifications),
-            title: Text('Notifications'),
+            leading: const Icon(Icons.notifications),
+            title: const Text('Notifications'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NotificationsScreen(),
+                  builder: (context) => const NotificationsScreen(),
                 ),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.assignment),
-            title: Text('Tasks'),
+            leading: const Icon(Icons.assignment),
+            title: const Text('Tasks'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TasksScreen(),
+                  builder: (context) => const TasksScreen(),
                 ),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Configuration'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Configuration'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ConfigurationScreen(),
+                  builder: (context) => const ConfigurationScreen(),
                 ),
               );
             },
@@ -62,17 +64,17 @@ class DisplayableMenu extends StatelessWidget {
             width: double.infinity,
             height: 0.1,
           ),
-          Container(
+          SizedBox(
             height: 100,
             child: Row(
               children: <Widget>[
                 TextButton(
-                  child: Text('Logout'),
+                  child: const Text('Logout'),
                   onPressed: () {
                     print('Logout');
                   },
                 ),
-                Text('Your App Name - v1.0.0'),
+                const Text('Your App Name - v1.0.0'),
               ],
             ),
           ),
@@ -89,9 +91,9 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Screen'),
+        title: const Text('Chat Screen'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Chat Content'),
       ),
     );
@@ -105,9 +107,9 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifications Screen'),
+        title: const Text('Notifications Screen'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Notifications Content'),
       ),
     );
@@ -121,9 +123,9 @@ class TasksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tasks Screen'),
+        title: const Text('Tasks Screen'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Tasks Content'),
       ),
     );
@@ -137,9 +139,9 @@ class ConfigurationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Configuration Screen'),
+        title: const Text('Configuration Screen'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Configuration Content'),
       ),
     );

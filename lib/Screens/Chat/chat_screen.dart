@@ -1,6 +1,7 @@
 // chat_screen.dart
 import 'package:flutter/material.dart';
 import '../../Components/app_menu.dart';
+import '../../Components/message_widget.dart';
 import '../../Models/message_model.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -13,8 +14,11 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final List<Message> _messages = [
-    Message(sender: 'User', text: 'Hello!'),
-    Message(sender: 'Bot', text: 'Hi there! How can I help you?'),
+    Message(sender: 'User', text: 'Hello!', isUserMessage: true),
+    Message(
+        sender: 'Bot',
+        text: 'Hi there! How can I help you?',
+        isUserMessage: false),
   ];
 
   @override
@@ -23,17 +27,16 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         title: const Text('Chat'),
       ),
-      drawer: DisplayableMenu(),
+      drawer: const DisplayableMenu(),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
               itemCount: _messages.length,
               itemBuilder: (context, index) {
-                final message = _messages[index];
-                return ListTile(
-                  title: Text(message.sender),
-                  subtitle: Text(message.text),
+                return MessageWidget(
+                  message: _messages[index],
+                  isUserMessage: true,
                 );
               },
             ),
@@ -45,13 +48,16 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildInputField() {
+    final textController = TextEditingController();
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              controller: textController,
+              decoration: const InputDecoration(
                 hintText: 'Type your message...',
               ),
             ),
@@ -59,9 +65,16 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             icon: const Icon(Icons.send),
             onPressed: () {
-              // TODO: Send message functionality (use API when available)
-              // For now, add a dummy message to the list
-              _addMessage(Message(sender: 'User', text: 'Dummy message'));
+              if (textController.text.isNotEmpty) {
+                _addMessage(
+                  Message(
+                    sender: 'User',
+                    text: textController.text,
+                    isUserMessage: true,
+                  ),
+                );
+                textController.clear();
+              }
             },
           ),
         ],
