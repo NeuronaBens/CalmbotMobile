@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../components/already_have_an_account_acheck.dart';
+import '../../../Components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../Signup/signup_screen.dart';
+import '../../Chat/chat_screen.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({
@@ -44,7 +45,18 @@ class LoginForm extends StatelessWidget {
           ),
           //const SizedBox(height: defaultPadding),
           ElevatedButton(
-            onPressed: () {},
+            // here we define where login takes/do
+            // TODO
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const ChatScreen();
+                  },
+                ),
+              );
+            },
             child: Text(
               "Login".toUpperCase(),
             ),

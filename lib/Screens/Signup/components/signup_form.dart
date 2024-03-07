@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../components/already_have_an_account_acheck.dart';
+import '../../../Components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
 
@@ -44,6 +44,8 @@ class SignUpForm extends StatelessWidget {
           ),
           const SizedBox(height: defaultPadding / 2),
           ElevatedButton(
+            // here we define where login takes/do
+            // TODO
             onPressed: () {},
             child: Text("Sign Up".toUpperCase()),
           ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../../responsive.dart';
-import '../../components/background.dart';
-import 'components/sign_up_top_image.dart';
-import 'components/signup_form.dart';
+import '../../Components/background.dart';
+import 'Components/sign_up_top_image.dart';
+import 'Components/signup_form.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
