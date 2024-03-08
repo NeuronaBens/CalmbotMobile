@@ -4,55 +4,31 @@ import '../Models/message_model.dart';
 
 class MessageWidget extends StatelessWidget {
   final Message message;
-  final bool isUserMessage;
-  final VoidCallback? onDeleteMessage;
-  final VoidCallback? onBookmarkMessage;
 
-  const MessageWidget({
-    super.key,
-    required this.message,
-    required this.isUserMessage,
-    this.onDeleteMessage,
-    this.onBookmarkMessage,
-  });
+  const MessageWidget({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment:
-          isUserMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: isUserMessage ? Colors.white60 : Colors.purple,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: isUserMessage
-                ? CrossAxisAlignment.end
-                : CrossAxisAlignment.start,
-            children: [
-              Text(message.text),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: onDeleteMessage,
-                    icon: const Icon(Icons.delete),
-                    splashRadius: 18.0,
-                  ),
-                  IconButton(
-                    onPressed: onBookmarkMessage,
-                    icon: const Icon(Icons.bookmark),
-                    splashRadius: 18.0,
-                  ),
-                ],
-              ),
-            ],
+    return Align(
+      alignment:
+          message.isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.66, // 2/3 of screen width
+        ),
+        decoration: BoxDecoration(
+          color: message.isUserMessage ? Colors.purple[200] : Colors.grey[300],
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Text(
+          message.text,
+          style: TextStyle(
+            color: message.isUserMessage ? Colors.white : Colors.black,
           ),
         ),
-      ],
+      ),
     );
   }
 }

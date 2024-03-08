@@ -16,9 +16,10 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<Message> _messages = [
     Message(sender: 'User', text: 'Hello!', isUserMessage: true),
     Message(
-        sender: 'Bot',
-        text: 'Hi there! How can I help you?',
-        isUserMessage: false),
+      sender: 'Bot',
+      text: 'Hi there! How can I help you?',
+      isUserMessage: false,
+    ),
   ];
 
   @override
@@ -34,9 +35,9 @@ class _ChatScreenState extends State<ChatScreen> {
             child: ListView.builder(
               itemCount: _messages.length,
               itemBuilder: (context, index) {
+                final message = _messages[index];
                 return MessageWidget(
-                  message: _messages[index],
-                  isUserMessage: true,
+                  message: message,
                 );
               },
             ),
