@@ -9,7 +9,7 @@ class DisplayableMenu extends StatelessWidget {
       child: Column(
         children: <Widget>[
           const DrawerHeader(
-            child: Text('Your App Name'),
+            child: Text('Calmbot'),
           ),
           ListTile(
             leading: const Icon(Icons.chat),
@@ -25,7 +25,19 @@ class DisplayableMenu extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.notifications),
-            title: const Text('Notifications'),
+            title: const Text('Notificaciones'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationsScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.bookmark),
+            title: const Text('Favoritos'),
             onTap: () {
               Navigator.push(
                 context,
@@ -37,7 +49,7 @@ class DisplayableMenu extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.assignment),
-            title: const Text('Tasks'),
+            title: const Text('Tareas'),
             onTap: () {
               Navigator.push(
                 context,
@@ -49,7 +61,7 @@ class DisplayableMenu extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: const Text('Configuration'),
+            title: const Text('Configuración'),
             onTap: () {
               Navigator.push(
                 context,
@@ -74,7 +86,7 @@ class DisplayableMenu extends StatelessWidget {
                     print('Logout');
                   },
                 ),
-                const Text('Your App Name - v1.0.0'),
+                const Text('Calmbot - v1.0.0'),
               ],
             ),
           ),

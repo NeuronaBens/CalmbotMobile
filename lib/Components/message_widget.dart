@@ -16,7 +16,7 @@ class MessageWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.66, // 2/3 of screen width
+          maxWidth: MediaQuery.of(context).size.width * 0.75, // 2/3 of screen width
         ),
         decoration: BoxDecoration(
           color: message.isUserMessage ? Colors.purple[200] : Colors.grey[300],
