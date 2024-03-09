@@ -56,9 +56,24 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     : Icons.mark_email_unread,
                 color: studentNotification.read ? Colors.green : Colors.red,
               ),
-              title: Text(notification.name),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    notification.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    notification.dateSent.toString(),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
               subtitle: Text(notification.content),
-              trailing: Text(notification.dateSent.toString()),
               onTap: () {
                 // Handle notification tap
               },

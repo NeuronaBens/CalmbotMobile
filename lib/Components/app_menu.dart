@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../Screens/Chat/chat_screen.dart';
+import '../Screens/Configuration/configuration_screen.dart';
 import '../Screens/Favorites/favorites_screen.dart';
 import '../Screens/Notifications/notification_screen.dart';
 import '../Screens/Tasks/tasks_screen.dart';
@@ -96,22 +97,6 @@ class DisplayableMenu extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ConfigurationScreen extends StatelessWidget {
-  const ConfigurationScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Configuration Screen'),
-      ),
-      body: const Center(
-        child: Text('Configuration Content'),
       ),
     );
   }
