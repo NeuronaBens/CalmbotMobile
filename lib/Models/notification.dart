@@ -1,11 +1,11 @@
-class Notification {
+class NotificationC {
   int id;
   String name;
   String content;
   DateTime dateSent;
   int adminId;
 
-  Notification(
+  NotificationC(
       {required this.id,
       required this.name,
       required this.content,
