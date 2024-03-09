@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import '../../Components/app_menu.dart';
 import '../../Components/message_widget.dart';
-import '../../Models/message_model.dart';
+import '../../Models/message.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -14,11 +14,27 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final List<Message> _messages = [
-    Message(sender: 'User', text: 'Hello!', isUserMessage: true),
     Message(
-      sender: 'Bot',
+      id: 1,
+      session: 'session1',
+      position: 1,
+      sender: true,
+      deleted: false,
+      bookmarked: false,
+      dateSent: DateTime.now(),
+      text: 'Hello!',
+      studentId: 1,
+    ),
+    Message(
+      id: 2,
+      session: 'session1',
+      position: 2,
+      sender: false,
+      deleted: false,
+      bookmarked: false,
+      dateSent: DateTime.now(),
       text: 'Hi there! How can I help you?',
-      isUserMessage: false,
+      studentId: 2,
     ),
   ];
 
@@ -69,9 +85,15 @@ class _ChatScreenState extends State<ChatScreen> {
               if (textController.text.isNotEmpty) {
                 _addMessage(
                   Message(
-                    sender: 'User',
+                    id: _messages.length + 1,
+                    session: 'session1',
+                    position: _messages.length + 1,
+                    sender: true,
+                    deleted: false,
+                    bookmarked: false,
+                    dateSent: DateTime.now(),
                     text: textController.text,
-                    isUserMessage: true,
+                    studentId: 1,
                   ),
                 );
                 textController.clear();
