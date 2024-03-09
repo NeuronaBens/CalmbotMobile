@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../Screens/Chat/chat_screen.dart';
 import '../Screens/Favorites/favorites_screen.dart';
+import '../Screens/Notifications/notification_screen.dart';
 
 class DisplayableMenu extends StatelessWidget {
   const DisplayableMenu({super.key});
@@ -94,22 +95,6 @@ class DisplayableMenu extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class NotificationsScreen extends StatelessWidget {
-  const NotificationsScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Notifications Screen'),
-      ),
-      body: const Center(
-        child: Text('Notifications Content'),
       ),
     );
   }
