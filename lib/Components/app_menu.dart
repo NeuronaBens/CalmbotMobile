@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../Screens/Chat/chat_screen.dart';
+import '../Screens/Favorites/favorites_screen.dart';
+
 class DisplayableMenu extends StatelessWidget {
   const DisplayableMenu({super.key});
 
@@ -42,7 +45,7 @@ class DisplayableMenu extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const NotificationsScreen(),
+                  builder: (context) => const FavoritesScreen(),
                 ),
               );
             },
@@ -91,22 +94,6 @@ class DisplayableMenu extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chat Screen'),
-      ),
-      body: const Center(
-        child: Text('Chat Content'),
       ),
     );
   }
