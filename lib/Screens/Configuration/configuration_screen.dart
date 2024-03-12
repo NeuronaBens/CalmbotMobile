@@ -39,7 +39,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     );
     settings = Settings(
       id: 1,
-      collectionId: 'collection1',
+      dataCollection: true,
       theme: 'light',
       studentId: 1,
     );
@@ -48,92 +48,72 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Configuración'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(user.image),
-            ),
-            const SizedBox(height: 16),
-            _buildTextField('Url perfil', user.image),
-            const SizedBox(height: 16),
-            _buildTextField('Nombre', user.name),
-            const SizedBox(height: 16),
-            _buildTextField('Correo', user.email),
-            const SizedBox(height: 16),
-            _buildDropdownButton(),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // Implement clear conversation history logic
-              },
-              child: const Text('Borrar historial de conversación'),
-            ),
-          ],
+        appBar: AppBar(
+          title: const Text('Configuración'),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(String label, String value) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextFormField(
-            initialValue: value,
-            decoration: InputDecoration(
-              labelText: label,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 80,
+                  backgroundImage: NetworkImage(user.image),
+                ),
+                const SizedBox(height: 16.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: TextEditingController(text: user.name),
+                        decoration: const InputDecoration(
+                          labelText: 'Nombre',
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.check),
+                      onPressed: () {
+                        // Handle confirmation for name change
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller:
+                            TextEditingController(text: student.description),
+                        decoration: const InputDecoration(
+                          labelText: 'Descripción del estudiante',
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.check),
+                      onPressed: () {
+                        // Handle confirmation for name change
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32.0),
+                SwitchListTile(
+                  title: const Text('Tema'),
+                  value: settings.theme == 'dark',
+                  onChanged: (value) {
+                    setState(() {
+                      settings.theme = value ? 'dark' : 'light';
+                    });
+                  },
+                  secondary: const Icon(Icons.brightness_6),
+                )
+              ],
             ),
           ),
-        ),
-        const SizedBox(width: 16),
-        ElevatedButton(
-          onPressed: () {
-            // Implement update logic
-          },
-          child: const Text('Actualizar'),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDropdownButton() {
-    return Row(
-      children: [
-        const Text('Tema:'),
-        const SizedBox(width: 16),
-        DropdownButton<String>(
-          value: settings.theme,
-          onChanged: (String? newValue) {
-            setState(() {
-              settings.theme = newValue!;
-            });
-          },
-          items: const [
-            DropdownMenuItem(
-              value: 'light',
-              child: Text('Claro'),
-            ),
-            DropdownMenuItem(
-              value: 'dark',
-              child: Text('Oscuro'),
-            ),
-          ],
-        ),
-        const SizedBox(width: 16),
-        ElevatedButton(
-          onPressed: () {
-            // Implement update logic
-          },
-          child: const Text('Actualizar'),
-        ),
-      ],
-    );
+        ));
   }
 }
