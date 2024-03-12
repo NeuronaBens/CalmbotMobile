@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../Screens/Chat/chat_screen.dart';
 import '../Screens/Configuration/configuration_screen.dart';
@@ -14,8 +15,31 @@ class DisplayableMenu extends StatelessWidget {
     return Drawer(
       child: Column(
         children: <Widget>[
-          const DrawerHeader(
-            child: Text('Calmbot'),
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                    width: 1.0,
+                    color: Colors.black), // Adjust width and color as needed
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 75,
+                  height: 75,
+                  child: SvgPicture.asset('assets/icons/logo.svg'),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  '     Calmbot     ',
+                  style: TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.chat),
