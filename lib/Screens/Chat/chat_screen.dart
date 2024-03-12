@@ -37,7 +37,6 @@ class _ChatScreenState extends State<ChatScreen> {
       studentId: 2,
     ),
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +46,61 @@ class _ChatScreenState extends State<ChatScreen> {
       drawer: const DisplayableMenu(),
       body: Column(
         children: [
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Bienvenido a',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.black, // Set the color as needed
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      ' Calmbot', // Add a space before Calmbot to separate it from the previous text
+                      style: TextStyle(
+                        fontSize: 24, // Adjust the font size as needed
+                        color: Colors.purple, // Set the color as needed
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  'Tu chatbot de autoayuda y manejo del estrés y la ansiedad',
+                  style: TextStyle(
+                    fontSize: 14, // Adjust the font size as needed
+                    color: Colors.black, // Set the color as needed
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  'Inicia tu conversación con un saludo.',
+                  style: TextStyle(
+                    fontSize: 14, // Adjust the font size as needed
+                    color: Colors.grey, // Set the color as needed
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          // Add a Divider with margin
+          Container(
+            margin: const EdgeInsets.symmetric(
+                horizontal: 32.0), // Adjust the vertical margin as needed
+            child: const Divider(
+              height: 20,
+              thickness: 1,
+              color: Colors.grey,
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: _messages.length,

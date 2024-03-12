@@ -1,12 +1,12 @@
 class Settings {
   int id;
-  String collectionId;
+  bool dataCollection;
   String theme;
   int studentId;
 
   Settings(
       {required this.id,
-      required this.collectionId,
+      required this.dataCollection,
       required this.theme,
       required this.studentId});
 }

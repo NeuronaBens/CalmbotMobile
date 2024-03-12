@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../Screens/Chat/chat_screen.dart';
+import '../Screens/Configuration/configuration_screen.dart';
+import '../Screens/Favorites/favorites_screen.dart';
+import '../Screens/Notifications/notification_screen.dart';
+import '../Screens/Tasks/tasks_screen.dart';
 
 class DisplayableMenu extends StatelessWidget {
   const DisplayableMenu({super.key});
@@ -8,8 +15,31 @@ class DisplayableMenu extends StatelessWidget {
     return Drawer(
       child: Column(
         children: <Widget>[
-          const DrawerHeader(
-            child: Text('Calmbot'),
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                    width: 1.0,
+                    color: Colors.black), // Adjust width and color as needed
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 75,
+                  height: 75,
+                  child: SvgPicture.asset('assets/icons/logo.svg'),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  '     Calmbot     ',
+                  style: TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.chat),
@@ -42,7 +72,7 @@ class DisplayableMenu extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const NotificationsScreen(),
+                  builder: (context) => const FavoritesScreen(),
                 ),
               );
             },
@@ -91,70 +121,6 @@ class DisplayableMenu extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chat Screen'),
-      ),
-      body: const Center(
-        child: Text('Chat Content'),
-      ),
-    );
-  }
-}
-
-class NotificationsScreen extends StatelessWidget {
-  const NotificationsScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Notifications Screen'),
-      ),
-      body: const Center(
-        child: Text('Notifications Content'),
-      ),
-    );
-  }
-}
-
-class TasksScreen extends StatelessWidget {
-  const TasksScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tasks Screen'),
-      ),
-      body: const Center(
-        child: Text('Tasks Content'),
-      ),
-    );
-  }
-}
-
-class ConfigurationScreen extends StatelessWidget {
-  const ConfigurationScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Configuration Screen'),
-      ),
-      body: const Center(
-        child: Text('Configuration Content'),
       ),
     );
   }
