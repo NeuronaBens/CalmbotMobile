@@ -17,7 +17,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   late Settings settings;
 
   @override
-  void initState() {
+  void initState() { 
     super.initState();
     // Initialize user, student, and settings with mock data
     user = User(
