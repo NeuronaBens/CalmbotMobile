@@ -66,7 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       ' Calmbot', // Add a space before Calmbot to separate it from the previous text
                       style: TextStyle(
                         fontSize: 24, // Adjust the font size as needed
-                        color: Colors.purple, // Set the color as needed
+                        color: Color(0xFF7A72DE), // Set the color as needed
                         fontWeight: FontWeight.bold,
                       ),
                     ),

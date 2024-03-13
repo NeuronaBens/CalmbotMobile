@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
@@ -14,39 +15,24 @@ class SignUpForm extends StatelessWidget {
     return Form(
       child: Column(
         children: [
-          TextFormField(
-            keyboardType: TextInputType.emailAddress,
-            textInputAction: TextInputAction.next,
-            cursorColor: kPrimaryColor,
-            onSaved: (email) {},
-            decoration: const InputDecoration(
-              hintText: "Your email",
-              prefixIcon: Padding(
-                padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.person),
-              ),
+          const SizedBox(height: defaultPadding),
+          const Text(
+            "Cree una cuenta en nuestro sitio web.",
+            style: TextStyle(
+              color: Colors.grey, // Choose a suitable color for the message
+              fontStyle: FontStyle.italic,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-            child: TextFormField(
-              textInputAction: TextInputAction.done,
-              obscureText: true,
-              cursorColor: kPrimaryColor,
-              decoration: const InputDecoration(
-                hintText: "Your password",
-                prefixIcon: Padding(
-                  padding: EdgeInsets.all(defaultPadding),
-                  child: Icon(Icons.lock),
-                ),
-              ),
-            ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: defaultPadding / 2),
           ElevatedButton(
             // here we define where login takes/do
-            // TODO
-            onPressed: () {},
+            onPressed: () {
+              //TODO
+              //this should be replaced with the actual URL
+              Uri url = Uri.parse("https://www.example.com");
+              launchUrl(url);
+            },
             child: Text("Sign Up".toUpperCase()),
           ),
           const SizedBox(height: defaultPadding),

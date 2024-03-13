@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class AuthenticationService { 
+class AuthenticationService {
   static const String _baseUrl = 'https://your-next-js-server.com/api/auth';
   final _storage = const FlutterSecureStorage();
 
