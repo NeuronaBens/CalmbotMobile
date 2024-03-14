@@ -1,30 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../Models/notification.dart';
-import '../../Models/student_notification.dart';
-
-final dummyNotification = NotificationC(
-  id: 1,
-  name: 'New Update Available',
-  content:
-      'A new version of the app is available. Please update to enjoy the latest features and bug fixes.',
-  dateSent: DateTime.now(),
-  adminId: 1,
-);
-
-List<StudentNotification> studentNotifications = [
-  StudentNotification(
-    id: 1,
-    notificationId: dummyNotification.id,
-    studentId: 1,
-    read: false,
-  ),
-  StudentNotification(
-    id: 2,
-    notificationId: dummyNotification.id,
-    studentId: 2,
-    read: true,
-  ),
-];
+import '../../Models/notification_model.dart';
+import '../../Services/notification_service.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -34,26 +10,56 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
+  final NotificationService _notificationService = NotificationService();
+  List<dynamic> _studentNotifications = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNotifications();
+  }
+
+  Future<void> fetchNotifications() async {
+    final notifications = await _notificationService.getNotifications();
+    setState(() {
+      _studentNotifications = notifications;
+    });
+  }
+  Future<void> toggleNotificationReadStatus(String notificationId, bool read) async {
+    await _notificationService.updateNotificationReadStatus(notificationId, read);
+    fetchNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notificaciones'),
       ),
-      body: ListView.builder(
-        itemCount: studentNotifications.length,
+      body: _studentNotifications.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+        itemCount: _studentNotifications.length,
         itemBuilder: (context, index) {
-          final studentNotification = studentNotifications[index];
-          final notification =
-              dummyNotification; // Assuming all notifications are the same for now
+          final studentNotification = StudentNotification(
+            id: _studentNotifications[index]['id'],
+            studentId: _studentNotifications[index]['student_id'],
+            notificationId: _studentNotifications[index]['notification_id'],
+            read: _studentNotifications[index]['read'],
+          );
+          final notification = NotificationC(
+            id: _studentNotifications[index]['notification']['id'],
+            name: _studentNotifications[index]['notification']['name'],
+            content: _studentNotifications[index]['notification']['content'],
+            dateSent: DateTime.parse(_studentNotifications[index]['notification']['date_sent']),
+            adminId: _studentNotifications[index]['notification']['admin_id'],
+          );
 
           return Card(
             margin: const EdgeInsets.all(8.0),
             child: ListTile(
               leading: Icon(
-                studentNotification.read
-                    ? Icons.mark_email_read
-                    : Icons.mark_email_unread,
+                studentNotification.read ? Icons.mark_email_read : Icons.mark_email_unread,
                 color: studentNotification.read ? Colors.green : Colors.red,
               ),
               title: Column(
@@ -76,6 +82,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               subtitle: Text(notification.content),
               onTap: () {
                 // Handle notification tap
+                toggleNotificationReadStatus(
+                  studentNotification.id,
+                  !studentNotification.read,
+                );
               },
             ),
           );
