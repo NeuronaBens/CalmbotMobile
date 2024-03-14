@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../Models/student_task.dart';
-import '../../Models/task.dart';
+import 'package:flutter_auth/constants.dart';
+import '../../Models/task_model.dart';
+import '../../Services/tasks_service.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({Key? key}) : super(key: key);
@@ -11,18 +12,14 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
-  // Dummy data for demonstration purposes
-  List<Task> tasks = [
-    Task(id: 1, name: 'Task 1', content: 'Content for Task 1'),
-    Task(id: 2, name: 'Task 2', content: 'Content for Task 2'),
-    Task(id: 3, name: 'Task 3', content: 'Content for Task 3'),
-  ];
+  late Future<List<StudentTask>> _studentTasksFuture;
+  final TasksService _tasksService = TasksService();
 
-  List<StudentTask> studentTasks = [
-    StudentTask(id: 1, completed: false, studentId: 1, taskId: 1),
-    StudentTask(id: 2, completed: true, studentId: 1, taskId: 2),
-    StudentTask(id: 3, completed: false, studentId: 1, taskId: 3),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _studentTasksFuture = _tasksService.getStudentTasks();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,24 +30,42 @@ class _TasksScreenState extends State<TasksScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (context, index) {
-                final task = tasks[index];
-                final studentTask =
-                    studentTasks.firstWhere((st) => st.taskId == task.id);
-                return ListTile(
-                  title: Text(task.name),
-                  subtitle: Text(task.content),
-                  trailing: Checkbox(
-                    value: studentTask.completed,
-                    onChanged: (value) {
-                      setState(() {
-                        studentTask.completed = value!;
-                      });
+            child: FutureBuilder<List<StudentTask>>(
+              future: _studentTasksFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (snapshot.hasData) {
+                  final studentTasks = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: studentTasks.length,
+                    itemBuilder: (context, index) {
+                      final studentTask = studentTasks[index];
+                      final task = studentTask.task;
+                      final isCompleted = studentTask.completed == 1;
+                      return Container(
+                        color: isCompleted ? null : kPrimaryColor.withOpacity(0.5),
+                        child: ListTile(
+                          title: Text(task.name),
+                          subtitle: Text(task.content),
+                          trailing: Checkbox(
+                            value: isCompleted,
+                            onChanged: (value) {
+                              setState(() {
+                                studentTask.completed = value! ? 1 : 0;
+                              });
+                              _tasksService.updateTaskCompletion(studentTask.id, studentTask.completed);
+                            },
+                          ),
+                        ),
+                      );
                     },
-                  ),
-                );
+                  );
+                } else {
+                  return const Center(child: Text('No tasks available'));
+                }
               },
             ),
           ),
