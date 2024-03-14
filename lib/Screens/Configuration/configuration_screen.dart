@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../Models/user.dart';
-import '../../Models/student.dart';
-import '../../Models/settings.dart';
+import 'package:intl/intl.dart'; // Add this import
+import '../../Services/settings_service.dart';
 
 class ConfigurationScreen extends StatefulWidget {
   const ConfigurationScreen({Key? key}) : super(key: key);
@@ -12,108 +11,106 @@ class ConfigurationScreen extends StatefulWidget {
 }
 
 class _ConfigurationScreenState extends State<ConfigurationScreen> {
-  late User user;
-  late Student student;
-  late Settings settings;
+  late SettingsComplete settingsComplete;
+  final SettingsService _settingsService = SettingsService();
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
-    // Initialize user, student, and settings with mock data
-    user = User(
-      id: 1,
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      password: 'password',
-      image:
-          'https://www.ohchr.org/sites/default/files/styles/hero_image_2/public/2021-07/Ethiopia-UN0418425.jpg',
-      deletedAt: DateTime.now(),
-      roleId: 1,
-    );
-    student = Student(
-      studentId: 1,
-      description: 'Student description',
-      careerId: 1,
-      dateOfBirth: DateTime(1990, 1, 1),
-      sexId: 1,
-    );
-    settings = Settings(
-      id: 1,
-      dataCollection: true,
-      theme: 'light',
-      studentId: 1,
-    );
+    _fetchSettingsData();
+  }
+
+  Future<void> _fetchSettingsData() async {
+    try {
+      settingsComplete = await _settingsService.getSettingsRelatedMobile();
+      setState(() {});
+    } catch (e) {
+      // Handle error
+      print('Error fetching settings data: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Configuración'),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 80,
-                  backgroundImage: NetworkImage(user.image),
-                ),
-                const SizedBox(height: 16.0),
-                Row(
+      appBar: AppBar(
+        title: const Text('Configuration'),
+      ),
+      body: FutureBuilder<SettingsComplete>(
+        future: _settingsService.getSettingsRelatedMobile(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final settingsComplete = snapshot.data!;
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: TextField(
-                        controller: TextEditingController(text: user.name),
-                        decoration: const InputDecoration(
-                          labelText: 'Nombre',
-                        ),
+                    CircleAvatar(
+                      radius: 80,
+                      backgroundImage: settingsComplete.user.image.isNotEmpty
+                          ? NetworkImage(settingsComplete.user.image)
+                          : null,
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      settingsComplete.user.name,
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      settingsComplete.user.email,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 32.0),
+                    TextField(
+                      controller: TextEditingController(
+                          text: settingsComplete.description),
+                      decoration: const InputDecoration(
+                        labelText: 'Description',
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.check),
-                      onPressed: () {
-                        // Handle confirmation for name change
+                    const SizedBox(height: 16.0),
+                    Text(
+                      'Date of Birth: ${DateFormat('yyyy-MM-dd').format(settingsComplete.dateOfBirth)}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      'Sex: ${settingsComplete.sex.name}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      'Career: ${settingsComplete.career.name}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 16.0),
+                    SwitchListTile(
+                      title: const Text('Theme'),
+                      value: settingsComplete.settings.theme == 'dark',
+                      onChanged: (value) {
+                        setState(() {
+                          settingsComplete.settings.theme =
+                              value ? 'dark' : 'light';
+                          // Update theme setting
+                        });
                       },
                     ),
                   ],
                 ),
-                const SizedBox(height: 16.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller:
-                            TextEditingController(text: student.description),
-                        decoration: const InputDecoration(
-                          labelText: 'Descripción del estudiante',
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.check),
-                      onPressed: () {
-                        // Handle confirmation for name change
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32.0),
-                SwitchListTile(
-                  title: const Text('Tema'),
-                  value: settings.theme == 'dark',
-                  onChanged: (value) {
-                    setState(() {
-                      settings.theme = value ? 'dark' : 'light';
-                    });
-                  },
-                  secondary: const Icon(Icons.brightness_6),
-                )
-              ],
-            ),
-          ),
-        ));
+              ),
+            );
+          } else {
+            return const Center(child: Text('No data available'));
+          }
+        },
+      ),
+    );
   }
 }

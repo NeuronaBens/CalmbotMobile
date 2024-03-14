@@ -1,9 +1,9 @@
 class Student {
-  int studentId;
+  String studentId;
   String description;
-  int careerId;
+  String careerId;
   DateTime dateOfBirth;
-  int sexId;
+  String sexId;
 
   Student(
       {required this.studentId,

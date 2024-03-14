@@ -1,11 +1,11 @@
 class User {
-  int id;
+  String id;
   String name;
   String email;
   String password;
   String image;
   DateTime deletedAt;
-  int roleId;
+  String roleId;
 
   User(
       {required this.id,
