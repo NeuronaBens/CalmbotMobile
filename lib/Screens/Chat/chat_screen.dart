@@ -129,14 +129,12 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
+            child: Column(
+              children: _messages.map((message) {
                 return MessageWidget(
                   message: message,
                 );
-              },
+              }).toList(),
             ),
           ),
           _buildInputField(),
