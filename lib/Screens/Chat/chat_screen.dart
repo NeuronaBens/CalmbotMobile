@@ -1,5 +1,6 @@
 // chat_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/constants.dart';
 import '../../Components/app_menu.dart';
 import '../../Components/message_widget.dart';
 import '../../Models/message.dart';
@@ -94,7 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       ' Calmbot',
                       style: TextStyle(
                         fontSize: 24,
-                        color: Color(0xFF7A72DE),
+                        color: kPrimaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

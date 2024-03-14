@@ -21,8 +21,12 @@ class AuthenticationService {
     );
 
     if (response.statusCode == 200) {
-      final token = response.body; // Assuming the server returns a JWT token
+      final jsonResponse = jsonDecode(response.body);
+      final token = jsonResponse['token'];
+      final user = jsonResponse['user'];
       await _storage.write(key: 'token', value: token);
+      await _storage.write(key: 'user', value: jsonEncode(user));
+
       return true;
     }
 

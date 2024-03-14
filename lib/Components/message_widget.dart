@@ -1,5 +1,6 @@
 // message_widget.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/constants.dart';
 import '../Models/message.dart';
 
 class MessageWidget extends StatelessWidget {
@@ -19,7 +20,7 @@ class MessageWidget extends StatelessWidget {
               MediaQuery.of(context).size.width * 0.75, // 2/3 of screen width
         ),
         decoration: BoxDecoration(
-          color: message.sender ? Colors.purple[200] : Colors.grey[300],
+          color: message.sender ? kPrimaryColor.withOpacity(0.75) : Colors.grey[300],
           borderRadius: BorderRadius.circular(16.0),
         ),
         child: Text(
