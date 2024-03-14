@@ -19,6 +19,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void _handleLogin() async {
     //this navigator is for debugging purposes ***1
+    /*
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -27,10 +28,19 @@ class _LoginFormState extends State<LoginForm> {
         },
       ),
     );
+    */
     //here ends the debug code  ***1
 
+    /*
     final email = _emailController.text;
     final password = _passwordController.text;
+    */
+    const email = "ale@gmail.com";
+    const password = "1234";
+
+    print('Email: $email');
+    print('Password: $password');
+
     final isAuthenticated = await _authService.signIn(email, password);
 
     if (isAuthenticated) {

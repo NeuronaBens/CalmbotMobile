@@ -1,14 +1,23 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthenticationService {
-  static const String _baseUrl = 'https://your-next-js-server.com/api/auth';
+  // TODO: change to actual host
+  static const String _baseUrl = 'http://10.0.2.2:3000/api/auth';
   final _storage = const FlutterSecureStorage();
 
   Future<bool> signIn(String email, String password) async {
+    final requestBody = jsonEncode({
+      'email': email,
+      'password': password,
+    });
+
     final response = await http.post(
-      Uri.parse('$_baseUrl/signin'),
-      body: {'email': email, 'password': password},
+      Uri.parse('$_baseUrl/login'),
+      headers: {'Content-Type': 'application/json'},
+      body: requestBody,
     );
 
     if (response.statusCode == 200) {

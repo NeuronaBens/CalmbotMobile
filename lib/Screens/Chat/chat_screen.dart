@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../Components/app_menu.dart';
 import '../../Components/message_widget.dart';
 import '../../Models/message.dart';
+import '../../Services/auth_service.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -37,6 +38,33 @@ class _ChatScreenState extends State<ChatScreen> {
       studentId: 2,
     ),
   ];
+
+  final _authService =
+      AuthenticationService(); // Create an instance of the authentication service
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthentication();
+  }
+
+  Future<void> _checkAuthentication() async {
+    final isAuthenticated = await _authService.isAuthenticated();
+
+    if (!isAuthenticated) {
+      // Navigate to the login screen or show an error message
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return const ChatScreen();
+          },
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,15 +86,15 @@ class _ChatScreenState extends State<ChatScreen> {
                       'Bienvenido a',
                       style: TextStyle(
                         fontSize: 24,
-                        color: Colors.black, // Set the color as needed
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      ' Calmbot', // Add a space before Calmbot to separate it from the previous text
+                      ' Calmbot',
                       style: TextStyle(
-                        fontSize: 24, // Adjust the font size as needed
-                        color: Color(0xFF7A72DE), // Set the color as needed
+                        fontSize: 24,
+                        color: Color(0xFF7A72DE),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -75,26 +103,24 @@ class _ChatScreenState extends State<ChatScreen> {
                 Text(
                   'Tu chatbot de autoayuda y manejo del estrés y la ansiedad',
                   style: TextStyle(
-                    fontSize: 14, // Adjust the font size as needed
-                    color: Colors.black, // Set the color as needed
+                    fontSize: 14,
+                    color: Colors.black,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   'Inicia tu conversación con un saludo.',
                   style: TextStyle(
-                    fontSize: 14, // Adjust the font size as needed
-                    color: Colors.grey, // Set the color as needed
+                    fontSize: 14,
+                    color: Colors.grey,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ],
             ),
           ),
-          // Add a Divider with margin
           Container(
-            margin: const EdgeInsets.symmetric(
-                horizontal: 32.0), // Adjust the vertical margin as needed
+            margin: const EdgeInsets.symmetric(horizontal: 32.0),
             child: const Divider(
               height: 20,
               thickness: 1,
