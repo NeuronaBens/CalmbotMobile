@@ -31,15 +31,8 @@ class _LoginFormState extends State<LoginForm> {
     */
     //here ends the debug code  ***1
 
-    /*
     final email = _emailController.text;
     final password = _passwordController.text;
-    */
-    const email = "ale@gmail.com";
-    const password = "1234";
-
-    print('Email: $email');
-    print('Password: $password');
 
     final isAuthenticated = await _authService.signIn(email, password);
 
