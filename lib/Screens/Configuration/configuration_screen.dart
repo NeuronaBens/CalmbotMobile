@@ -11,8 +11,9 @@ class ConfigurationScreen extends StatefulWidget {
 }
 
 class _ConfigurationScreenState extends State<ConfigurationScreen> {
-  late SettingsComplete settingsComplete;
+  SettingsComplete? settingsComplete;
   final SettingsService _settingsService = SettingsService();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -23,6 +24,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   Future<void> _fetchSettingsData() async {
     try {
       settingsComplete = await _settingsService.getSettingsRelatedMobile();
+      _descriptionController.text = settingsComplete?.description ?? '';
       setState(() {});
     } catch (e) {
       // Handle error
@@ -68,12 +70,31 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                       style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 32.0),
-                    TextField(
-                      controller: TextEditingController(
-                          text: settingsComplete.description),
-                      decoration: const InputDecoration(
-                        labelText: 'Description',
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _descriptionController,
+                            decoration: const InputDecoration(
+                              labelText: 'Description',
+                            ),
+                            onChanged: (value) {
+                              settingsComplete.description = value;
+                            },
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            _settingsService.updateStudentDescription(_descriptionController.text);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(32, 32),
+                            shape: const CircleBorder(),
+                          ),
+                          child: const Icon(Icons.check),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 16.0),
                     Text(
@@ -93,12 +114,12 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                     const SizedBox(height: 16.0),
                     SwitchListTile(
                       title: const Text('Theme'),
-                      value: settingsComplete.settings.theme == 'dark',
+                      value: settingsComplete.settings.theme == 'Oscuro',
                       onChanged: (value) {
                         setState(() {
-                          settingsComplete.settings.theme =
-                              value ? 'dark' : 'light';
-                          // Update theme setting
+                          final newTheme = value ? 'Oscuro' : 'Claro';
+                          settingsComplete.settings.theme = newTheme;
+                          _settingsService.updateTheme(settingsComplete.settings.id, newTheme);
                         });
                       },
                     ),

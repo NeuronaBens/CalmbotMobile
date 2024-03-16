@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SettingsComplete {
   final String studentId;
-  final String description;
+  late final String description;
   final DateTime dateOfBirth;
   final String sexId;
   final String careerId;
@@ -166,5 +166,45 @@ class SettingsService {
     }
 
     throw Exception('Failed to load settings');
+  }
+  Future<void> updateStudentDescription(String description) async {
+    final token = await _storage.read(key: 'token');
+    final userJson = await _storage.read(key: 'user');
+    final user = jsonDecode(userJson!);
+    final studentId = user['id'];
+
+    final body = jsonEncode({
+      'student_id': studentId,
+      'description': description
+    });
+
+    final response = await http.put(
+      Uri.parse('$_baseUrl/database/students/$studentId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    );
+  }
+  Future<void> updateTheme(String settingsId, String theme) async {
+    final token = await _storage.read(key: 'token');
+    final userJson = await _storage.read(key: 'user');
+    final user = jsonDecode(userJson!);
+    final studentId = user['id'];
+
+    final body = jsonEncode({
+      'id': settingsId,
+      'theme': theme
+    });
+
+    final response = await http.put(
+      Uri.parse('$_baseUrl/database/students/$studentId/settings'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    );
   }
 }
