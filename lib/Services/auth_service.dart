@@ -27,6 +27,21 @@ class AuthenticationService {
       await _storage.write(key: 'token', value: token);
       await _storage.write(key: 'user', value: jsonEncode(user));
 
+      // Fetch the user's settings
+      final settingsResponse = await http.get(
+        Uri.parse('$_baseUrl/database/students/${user['id']}/settings'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (settingsResponse.statusCode == 200) {
+        final settingsJson = jsonDecode(settingsResponse.body);
+        final theme = settingsJson['theme'];
+        await _storage.write(key: 'theme', value: theme);
+      }
+
       return true;
     }
 

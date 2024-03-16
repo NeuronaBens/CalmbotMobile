@@ -206,5 +206,10 @@ class SettingsService {
       },
       body: body,
     );
+
+    if (response.statusCode == 200) {
+      // Update the theme in _storage
+      await _storage.write(key: 'theme', value: theme);
+    }
   }
 }
