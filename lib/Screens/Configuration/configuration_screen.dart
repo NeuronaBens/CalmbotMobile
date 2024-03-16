@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Add this import
 import '../../Services/settings_service.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
+import '../../Utils/load_theme.dart';
 import '../../constants.dart';
 
 class ConfigurationScreen extends StatefulWidget {
@@ -17,13 +16,12 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   SettingsComplete? settingsComplete;
   final SettingsService _settingsService = SettingsService();
   final TextEditingController _descriptionController = TextEditingController();
-  final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
     _fetchSettingsData();
-    _loadTheme();
+    loadTheme();
   }
 
   Future<void> _fetchSettingsData() async {
@@ -37,49 +35,10 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     }
   }
 
-  Future<ThemeData> _loadTheme() async {
-    final themeString = await _storage.read(key: 'theme');
-    print('Loaded theme: $themeString');
-    if (themeString == 'Oscuro') {
-      return ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF1F2128),
-        appBarTheme: const AppBarTheme(
-          color: Color(0xFF2B2D3E),
-          elevation: 0,
-          iconTheme: IconThemeData(color: Colors.white),
-          titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        textTheme: Typography.material2021().white.copyWith(
-          bodyMedium: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-          ),
-          titleMedium: const TextStyle(
-            fontSize: 16,
-            color: Colors.green,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
-        inputDecorationTheme: const InputDecorationTheme(
-          labelStyle: TextStyle(
-            fontSize: 18.0, // Set the desired font size for the label
-            color: kPrimaryColor, // Set the color to kPrimaryColor
-          ),
-        ),
-      );
-    } else {
-      return ThemeData.light();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<ThemeData>(
-      future: _loadTheme(),
+      future: loadTheme(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
@@ -111,7 +70,8 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                           children: [
                             CircleAvatar(
                               radius: 80,
-                              backgroundImage: settingsComplete.user.image.isNotEmpty
+                              backgroundImage: settingsComplete
+                                      .user.image.isNotEmpty
                                   ? NetworkImage(settingsComplete.user.image)
                                   : null,
                             ),
@@ -142,7 +102,8 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    _settingsService.updateStudentDescription(_descriptionController.text);
+                                    _settingsService.updateStudentDescription(
+                                        _descriptionController.text);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     minimumSize: const Size(32, 32),
@@ -173,11 +134,13 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                 'Theme',
                                 style: TextStyle(color: kPrimaryColor),
                               ),
-                              value: settingsComplete.settings.theme == 'Oscuro',
+                              value:
+                                  settingsComplete.settings.theme == 'Oscuro',
                               onChanged: (value) async {
                                 final newTheme = value ? 'Oscuro' : 'Claro';
                                 settingsComplete.settings.theme = newTheme;
-                                await _settingsService.updateTheme(settingsComplete.settings.id, newTheme);
+                                await _settingsService.updateTheme(
+                                    settingsComplete.settings.id, newTheme);
                                 print('Theme updated to: $newTheme');
                                 setState(() {});
                               },
@@ -196,7 +159,5 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
         }
       },
     );
-
-
   }
 }
