@@ -37,10 +37,53 @@ class _TasksScreenState extends State<TasksScreen> {
             data: theme,
             child: Scaffold(
               appBar: AppBar(
-                title: const Text('Tasks Screen'),
+                title: const Text('Tareas'),
               ),
               body: Column(
                 children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Bienvenido a ',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'Tus Tareas',
+                              style: TextStyle(
+                                color: kPrimaryColor,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Aquí podrás ver y completar las tareas que Calmbot te sugiere realizar para mejorar tu estado de animo.',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                    child: const Divider(),
+                  ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: FutureBuilder<List<StudentTask>>(
                       future: _studentTasksFuture,

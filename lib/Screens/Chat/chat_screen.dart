@@ -87,57 +87,6 @@ class _ChatScreenState extends State<ChatScreen> {
               drawer: const DisplayableMenu(),
               body: Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Bienvenido a',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              ' Calmbot',
-                              style: TextStyle(
-                                fontSize: 24,
-                                color: kPrimaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          'Tu chatbot de autoayuda y manejo del estrés y la ansiedad',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          'Inicia tu conversación con un saludo.',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: const Divider(
-                      height: 20,
-                      thickness: 1,
-                      color: Colors.grey,
-                    ),
-                  ),
                   Expanded(
                     child: Column(
                       children: _messages.map((message) {

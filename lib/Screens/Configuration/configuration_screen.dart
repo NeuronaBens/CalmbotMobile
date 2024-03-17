@@ -51,7 +51,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
             data: theme,
             child: Scaffold(
               appBar: AppBar(
-                title: const Text('Configuration'),
+                title: const Text('Configuración'),
               ),
               body: FutureBuilder<SettingsComplete>(
                 future: _settingsService.getSettingsRelatedMobile(),
