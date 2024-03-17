@@ -21,7 +21,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   void initState() {
     super.initState();
     _fetchSettingsData();
-    loadTheme();
+    loadTheme(); //just this is needed to alter the theme.
   }
 
   Future<void> _fetchSettingsData() async {

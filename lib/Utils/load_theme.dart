@@ -74,9 +74,22 @@ How is this used?
 @override
 Widget build(BuildContext context) {
   return FutureBuilder<ThemeData>(
-    future: loadTheme(), // Use the imported loadTheme function
+    future: loadTheme(),
     builder: (context, snapshot) {
-      // ... (rest of the code remains the same)
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const CircularProgressIndicator();
+      } else if (snapshot.hasError) {
+        return Text('Error loading theme: ${snapshot.error}');
+      } else {
+        final theme = snapshot.data!;
+        return Theme(
+          data: theme,
+          child: Scaffold(
+            appBar: AppBar(), // your app bar
+            body: Container(), //your body
+          ),
+        );
+      }
     },
   );
 }

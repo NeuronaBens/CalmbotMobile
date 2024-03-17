@@ -5,6 +5,7 @@ import '../../Components/app_menu.dart';
 import '../../Components/message_widget.dart';
 import '../../Models/message.dart';
 import '../../Services/auth_service.dart';
+import '../../Utils/load_theme.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -68,76 +69,91 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chat'),
-      ),
-      drawer: const DisplayableMenu(),
-      body: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Bienvenido a',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+    return FutureBuilder<ThemeData>(
+      future: loadTheme(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error loading theme: ${snapshot.error}');
+        } else {
+          final theme = snapshot.data!;
+          return Theme(
+            data: theme,
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text('Chat'),
+              ), // your app bar
+              drawer: const DisplayableMenu(),
+              body: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Bienvenido a',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              ' Calmbot',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: kPrimaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'Tu chatbot de autoayuda y manejo del estrés y la ansiedad',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          'Inicia tu conversación con un saludo.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    Text(
-                      ' Calmbot',
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: kPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: const Divider(
+                      height: 20,
+                      thickness: 1,
+                      color: Colors.grey,
                     ),
-                  ],
-                ),
-                Text(
-                  'Tu chatbot de autoayuda y manejo del estrés y la ansiedad',
-                  style: TextStyle(
-                    fontSize: 14,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  'Inicia tu conversación con un saludo.',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
+                  Expanded(
+                    child: Column(
+                      children: _messages.map((message) {
+                        return MessageWidget(
+                          message: message,
+                        );
+                      }).toList(),
+                    ),
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+                  _buildInputField(),
+                ],
+              ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 32.0),
-            child: const Divider(
-              height: 20,
-              thickness: 1,
-              color: Colors.grey,
-            ),
-          ),
-          Expanded(
-            child: Column(
-              children: _messages.map((message) {
-                return MessageWidget(
-                  message: message,
-                );
-              }).toList(),
-            ),
-          ),
-          _buildInputField(),
-        ],
-      ),
+          );
+        }
+      },
     );
   }
 

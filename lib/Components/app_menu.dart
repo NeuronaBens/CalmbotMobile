@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../Screens/Chat/chat_screen.dart';
@@ -118,6 +119,7 @@ class DisplayableMenu extends StatelessWidget {
                     final authService = AuthenticationService();
                     await authService.logout();
                     // Navigate to the login screen
+                    SystemNavigator.pop();
                     // ignore: use_build_context_synchronously
                     Navigator.push(
                       context,
