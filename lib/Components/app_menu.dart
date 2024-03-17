@@ -4,8 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../Screens/Chat/chat_screen.dart';
 import '../Screens/Configuration/configuration_screen.dart';
 import '../Screens/Favorites/favorites_screen.dart';
+import '../Screens/Login/login_screen.dart';
 import '../Screens/Notifications/notification_screen.dart';
 import '../Screens/Tasks/tasks_screen.dart';
+import '../Services/auth_service.dart';
 
 class DisplayableMenu extends StatelessWidget {
   const DisplayableMenu({super.key});
@@ -112,8 +114,18 @@ class DisplayableMenu extends StatelessWidget {
               children: <Widget>[
                 TextButton(
                   child: const Text('Logout'),
-                  onPressed: () {
-                    print('Logout');
+                  onPressed: () async {
+                    final authService = AuthenticationService();
+                    await authService.logout();
+                    // Navigate to the login screen
+                    // ignore: use_build_context_synchronously
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                        maintainState: false,
+                      ),
+                    );
                   },
                 ),
                 const Text('Calmbot - v1.0.0'),

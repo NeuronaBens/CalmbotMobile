@@ -55,6 +55,8 @@ class AuthenticationService {
 
   Future<void> logout() async {
     await _storage.delete(key: 'token');
+    await _storage.delete(key: 'user'); // Clear the user object
+    await _storage.delete(key: 'theme'); // Clear the theme preference
     // Clear any other user-related data from storage
   }
 }
