@@ -87,7 +87,6 @@ class _ChatScreenState extends State<ChatScreen> {
                       'Bienvenido a',
                       style: TextStyle(
                         fontSize: 24,
-                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -105,7 +104,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   'Tu chatbot de autoayuda y manejo del estrés y la ansiedad',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.black,
                   ),
                   textAlign: TextAlign.center,
                 ),

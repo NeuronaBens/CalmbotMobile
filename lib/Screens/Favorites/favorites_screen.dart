@@ -47,7 +47,6 @@ class FavoritesScreenState extends State<FavoritesScreen> {
                       Text(
                         'Bienvenido a ',
                         style: TextStyle(
-                          color: Colors.black,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
@@ -66,7 +65,6 @@ class FavoritesScreenState extends State<FavoritesScreen> {
                   Text(
                     'Aquí podrás ver y gestionar los mensajes que has guardado durante las sesiones.',
                     style: TextStyle(
-                      color: Colors.black54,
                       fontSize: 14,
                     ),
                     textAlign: TextAlign.center,
