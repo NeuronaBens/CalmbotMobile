@@ -1,14 +1,70 @@
 import 'package:flutter/material.dart';
 
-import '../../../Components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
-import '../../Signup/signup_screen.dart';
 import '../../Chat/chat_screen.dart';
+import '../../../Services/auth_service.dart'; // Assuming you have an AuthenticationService class
 
-class LoginForm extends StatelessWidget {
-  const LoginForm({
-    Key? key,
-  }) : super(key: key);
+class LoginForm extends StatefulWidget {
+  const LoginForm({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _authService = AuthenticationService();
+
+  void _handleLogin() async {
+    //this navigator is for debugging purposes ***1
+    /*
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const ChatScreen();
+        },
+      ),
+    );
+    */
+    //here ends the debug code  ***1
+
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    final isAuthenticated = await _authService.signIn(email, password);
+
+    if (isAuthenticated) {
+      // Navigate to the desired screen (e.g., ChatScreen)
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return const ChatScreen();
+          },
+        ),
+      );
+    } else {
+      // Show an error message
+      // ignore: use_build_context_synchronously
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Invalid email or password'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +72,10 @@ class LoginForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             cursorColor: kPrimaryColor,
-            onSaved: (email) {},
             decoration: const InputDecoration(
               hintText: "Your email",
               prefixIcon: Padding(
@@ -31,6 +87,7 @@ class LoginForm extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: defaultPadding),
             child: TextFormField(
+              controller: _passwordController,
               textInputAction: TextInputAction.done,
               obscureText: true,
               cursorColor: kPrimaryColor,
@@ -43,37 +100,13 @@ class LoginForm extends StatelessWidget {
               ),
             ),
           ),
-          //const SizedBox(height: defaultPadding),
           ElevatedButton(
-            // here we define where login takes/do
-            // TODO
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const ChatScreen();
-                  },
-                ),
-              );
-            },
+            onPressed: _handleLogin,
             child: Text(
               "Login".toUpperCase(),
             ),
           ),
           const SizedBox(height: defaultPadding),
-          AlreadyHaveAnAccountCheck(
-            press: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const SignUpScreen();
-                  },
-                ),
-              );
-            },
-          ),
         ],
       ),
     );
