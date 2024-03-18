@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/constants.dart';
 import '../../Components/app_menu.dart';
 import '../../Components/message_widget.dart';
 import '../../Models/message.dart';
