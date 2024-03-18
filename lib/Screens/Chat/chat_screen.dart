@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_auth/constants.dart';
 import '../../Components/app_menu.dart';
 import '../../Components/message_widget.dart';
 import '../../Models/message.dart';
@@ -18,6 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Message> _messages = [];
   final _authService = AuthenticationService();
   final _chatService = ChatService();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -59,6 +62,14 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(seconds: 1),
+      curve: Curves.easeOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<ThemeData>(
@@ -77,10 +88,20 @@ class _ChatScreenState extends State<ChatScreen> {
                 title: const Text('Chat'),
               ),
               drawer: const DisplayableMenu(),
+              floatingActionButton: FloatingActionButton(
+                onPressed: _scrollToBottom,
+                child: const Icon(Icons.arrow_downward),
+                mini: true,
+                shape: const CircleBorder(),
+                backgroundColor: kPrimaryColor,
+                foregroundColor: kPrimaryLightColor,
+              ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
               body: Column(
                 children: [
                   Expanded(
                     child: ListView.builder(
+                      controller: _scrollController,
                       itemCount: _messages.length,
                       itemBuilder: (context, index) {
                         final message = _messages[index];
