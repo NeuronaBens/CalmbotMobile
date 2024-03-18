@@ -19,7 +19,7 @@ class BookmarkedMessageService {
     );
 
     if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
+      final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
       return jsonResponse;
     }
 

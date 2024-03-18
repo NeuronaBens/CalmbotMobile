@@ -30,7 +30,7 @@ class Message {
       deleted: json['deleted'],
       bookmarked: json['bookmarked'],
       dateSend: DateTime.parse(json['date_send']),
-      text: json['text'],
+      text: json['text'] ?? '',
       studentId: json['student_id'],
     );
   }

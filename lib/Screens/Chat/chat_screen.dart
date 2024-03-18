@@ -1,11 +1,15 @@
 // chat_screen.dart
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/constants.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 import '../../Components/app_menu.dart';
 import '../../Components/message_widget.dart';
 import '../../Models/message.dart';
 import '../../Services/auth_service.dart';
 import '../../Utils/load_theme.dart';
+
+import 'dart:convert';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -16,33 +20,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final List<Message> _messages = [
-    Message(
-      id: "1",
-      session: 1,
-      position: 1,
-      sender: true,
-      deleted: false,
-      bookmarked: false,
-      dateSend: DateTime.now(),
-      text: 'Hello!',
-      studentId: "2",
-    ),
-    Message(
-      id: "2",
-      session: 1,
-      position: 2,
-      sender: false,
-      deleted: false,
-      bookmarked: false,
-      dateSend: DateTime.now(),
-      text: 'Hi there! How can I help you?',
-      studentId: "2",
-    ),
-  ];
-
-  final _authService =
-      AuthenticationService(); // Create an instance of the authentication service
+  List<Message> _messages = [];
+  final _authService = AuthenticationService();
+  final _storage = const FlutterSecureStorage();
+  final String _baseUrl = 'http://10.0.2.2:3000/api';
 
   @override
   void initState() {
@@ -64,6 +45,51 @@ class _ChatScreenState extends State<ChatScreen> {
           },
         ),
       );
+    } else {
+      // Fetch existing messages from the last session
+      await _fetchMessages();
+    }
+  }
+
+  Future<void> _fetchMessages() async {
+    final userJson = await _storage.read(key: 'user');
+    final user = jsonDecode(userJson!);
+    final studentId = user['id'];
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/database/students/$studentId/messages/current-session'),
+      headers: {'Authorization': 'Bearer ${await _storage.read(key: 'token')}'},
+    );
+
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
+      setState(() {
+        _messages = jsonResponse.map<Message>((json) => Message.fromJson(json)).toList();
+      });
+    }
+  }
+
+  Future<void> _sendMessage(String text) async {
+    final userJson = await _storage.read(key: 'user');
+    final user = jsonDecode(userJson!);
+    final studentId = user['id'];
+
+    final response = await http.post(
+      Uri.parse('$_baseUrl/database/students/$studentId/messages'),
+      headers: {
+        'Authorization': 'Bearer ${await _storage.read(key: 'token')}',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({'message': text}),
+    );
+
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
+      setState(() {
+        _messages.add(Message.fromJson(jsonResponse));
+      });
     }
   }
 
@@ -83,17 +109,17 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Scaffold(
               appBar: AppBar(
                 title: const Text('Chat'),
-              ), // your app bar
+              ),
               drawer: const DisplayableMenu(),
               body: Column(
                 children: [
                   Expanded(
-                    child: Column(
-                      children: _messages.map((message) {
-                        return MessageWidget(
-                          message: message,
-                        );
-                      }).toList(),
+                    child: ListView.builder(
+                      itemCount: _messages.length,
+                      itemBuilder: (context, index) {
+                        final message = _messages[index];
+                        return MessageWidget(message: message);
+                      },
                     ),
                   ),
                   _buildInputField(),
@@ -123,21 +149,9 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.send),
-            onPressed: () {
+            onPressed: () async {
               if (textController.text.isNotEmpty) {
-                _addMessage(
-                  Message(
-                    id: "ddd",
-                    session: 1,
-                    position: _messages.length + 1,
-                    sender: true,
-                    deleted: false,
-                    bookmarked: false,
-                    dateSend: DateTime.now(),
-                    text: textController.text,
-                    studentId: "2",
-                  ),
-                );
+                await _sendMessage(textController.text);
                 textController.clear();
               }
             },
@@ -145,11 +159,5 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
     );
-  }
-
-  void _addMessage(Message message) {
-    setState(() {
-      _messages.add(message);
-    });
   }
 }
