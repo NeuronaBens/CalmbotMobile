@@ -78,6 +78,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  flutter_list_view:
+    dependency: "direct main"
+    description:
+      name: flutter_list_view
+      sha256: ac64a11abdb6543e8f8a570e3ae763519c1e84994d77565779960dc0346a0bd6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.23"
   flutter_secure_storage:
     dependency: "direct main"
     description:

@@ -25,6 +25,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   url_launcher: ^6.2.5
   intl: ^0.19.0
+  flutter_list_view: ^1.1.23
 
 dev_dependencies:
   flutter_test:

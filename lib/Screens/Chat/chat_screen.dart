@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_auth/constants.dart';
 import '../../Components/app_menu.dart';
 import '../../Components/message_widget.dart';
@@ -7,6 +6,7 @@ import '../../Models/message.dart';
 import '../../Services/auth_service.dart';
 import '../../Services/chat_service.dart';
 import '../../Utils/load_theme.dart';
+import 'package:flutter_list_view/flutter_list_view.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -56,18 +56,34 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> _sendMessage(String text) async {
-    final message = await _chatService.sendMessage(text);
-    setState(() {
-      _messages.add(message);
-    });
-  }
+    // Get the last message from the message list
+    final lastMessage = _messages.isNotEmpty ? _messages.last : null;
 
-  void _scrollToBottom() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(seconds: 1),
-      curve: Curves.easeOut,
+    // Create a new message object for the user-sent message
+    final userMessage = Message(
+      id: 'MSG-${DateTime.now().millisecondsSinceEpoch}',
+      text: text,
+      session: lastMessage != null ? lastMessage.session : 1,
+      position: lastMessage != null ? lastMessage.position + 1 : 0,
+      sender: true,
+      deleted: false,
+      bookmarked: false,
+      dateSend: DateTime.now(),
+      studentId: 'USR-${DateTime.now().millisecondsSinceEpoch}',
     );
+
+    // Add the user-sent message to the message list
+    setState(() {
+      _messages.add(userMessage);
+    });
+
+    // Send the message and get the response from the chat service
+    final machineMessage = await _chatService.sendMessage(text);
+
+    // Add the machine response to the message list
+    setState(() {
+      _messages.add(machineMessage);
+    });
   }
 
   @override
@@ -88,25 +104,21 @@ class _ChatScreenState extends State<ChatScreen> {
                 title: const Text('Chat'),
               ),
               drawer: const DisplayableMenu(),
-              floatingActionButton: FloatingActionButton(
-                onPressed: _scrollToBottom,
-                child: const Icon(Icons.arrow_downward),
-                mini: true,
-                shape: const CircleBorder(),
-                backgroundColor: kPrimaryColor,
-                foregroundColor: kPrimaryLightColor,
-              ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
               body: Column(
                 children: [
                   Expanded(
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: _messages.length,
-                      itemBuilder: (context, index) {
-                        final message = _messages[index];
-                        return MessageWidget(message: message);
-                      },
+                    child: FlutterListView(
+                      delegate: FlutterListViewDelegate(
+                        (BuildContext context, int index) {
+                          final message = _messages[index];
+                          return MessageWidget(message: message);
+                        },
+                        childCount: _messages.length,
+                        initIndex:
+                            _messages.length - 1, // Start at the last message
+                        initOffset: 0,
+                        initOffsetBasedOnBottom: true, // Scroll to the bottom
+                      ),
                     ),
                   ),
                   _buildInputField(),
