@@ -76,12 +76,14 @@ class _ChatScreenState extends State<ChatScreen> {
       _messages.add(userMessage);
     });
 
-    // Send the message and get the response from the chat service
-    final machineMessage = await _chatService.sendMessage(text);
+    // Send the message and get the response from the chat service asynchronously
+    final machineMessageFuture = _chatService.sendMessage(text);
 
-    // Add the machine response to the message list
-    setState(() {
-      _messages.add(machineMessage);
+    // Add the machine response to the message list when it's available
+    machineMessageFuture.then((machineMessage) {
+      setState(() {
+        _messages.add(machineMessage);
+      });
     });
   }
 
