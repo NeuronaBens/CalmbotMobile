@@ -18,26 +18,26 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final List<Message> _messages = [
     Message(
-      id: 1,
-      session: 'session1',
+      id: "1",
+      session: 1,
       position: 1,
       sender: true,
       deleted: false,
       bookmarked: false,
-      dateSent: DateTime.now(),
+      dateSend: DateTime.now(),
       text: 'Hello!',
-      studentId: 1,
+      studentId: "2",
     ),
     Message(
-      id: 2,
-      session: 'session1',
+      id: "2",
+      session: 1,
       position: 2,
       sender: false,
       deleted: false,
       bookmarked: false,
-      dateSent: DateTime.now(),
+      dateSend: DateTime.now(),
       text: 'Hi there! How can I help you?',
-      studentId: 2,
+      studentId: "2",
     ),
   ];
 
@@ -127,15 +127,15 @@ class _ChatScreenState extends State<ChatScreen> {
               if (textController.text.isNotEmpty) {
                 _addMessage(
                   Message(
-                    id: _messages.length + 1,
-                    session: 'session1',
+                    id: "ddd",
+                    session: 1,
                     position: _messages.length + 1,
                     sender: true,
                     deleted: false,
                     bookmarked: false,
-                    dateSent: DateTime.now(),
+                    dateSend: DateTime.now(),
                     text: textController.text,
-                    studentId: 1,
+                    studentId: "2",
                   ),
                 );
                 textController.clear();
