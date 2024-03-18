@@ -1,15 +1,10 @@
-// chat_screen.dart
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
 import '../../Components/app_menu.dart';
 import '../../Components/message_widget.dart';
 import '../../Models/message.dart';
 import '../../Services/auth_service.dart';
+import '../../Services/chat_service.dart';
 import '../../Utils/load_theme.dart';
-
-import 'dart:convert';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -22,8 +17,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   List<Message> _messages = [];
   final _authService = AuthenticationService();
-  final _storage = const FlutterSecureStorage();
-  final String _baseUrl = 'http://10.0.2.2:3000/api';
+  final _chatService = ChatService();
 
   @override
   void initState() {
@@ -52,45 +46,17 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> _fetchMessages() async {
-    final userJson = await _storage.read(key: 'user');
-    final user = jsonDecode(userJson!);
-    final studentId = user['id'];
-
-    final response = await http.get(
-      Uri.parse('$_baseUrl/database/students/$studentId/messages/current-session'),
-      headers: {'Authorization': 'Bearer ${await _storage.read(key: 'token')}'},
-    );
-
-
-    if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
-      setState(() {
-        _messages = jsonResponse.map<Message>((json) => Message.fromJson(json)).toList();
-      });
-    }
+    final messages = await _chatService.fetchMessages();
+    setState(() {
+      _messages = messages;
+    });
   }
 
   Future<void> _sendMessage(String text) async {
-    final userJson = await _storage.read(key: 'user');
-    final user = jsonDecode(userJson!);
-    final studentId = user['id'];
-
-    final response = await http.post(
-      Uri.parse('$_baseUrl/database/students/$studentId/messages'),
-      headers: {
-        'Authorization': 'Bearer ${await _storage.read(key: 'token')}',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({'message': text}),
-    );
-
-
-    if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
-      setState(() {
-        _messages.add(Message.fromJson(jsonResponse));
-      });
-    }
+    final message = await _chatService.sendMessage(text);
+    setState(() {
+      _messages.add(message);
+    });
   }
 
   @override
