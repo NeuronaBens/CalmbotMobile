@@ -19,7 +19,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Message> _messages = [];
   final _authService = AuthenticationService();
   final _chatService = ChatService();
-  final ScrollController _scrollController = ScrollController();
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -51,6 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final messages = await _chatService.fetchMessages();
     setState(() {
       _messages = messages;
+      _isLoading = false;
     });
   }
 
@@ -108,15 +109,17 @@ class _ChatScreenState extends State<ChatScreen> {
               body: Column(
                 children: [
                   Expanded(
-                    child: FlutterListView(
+                    child: _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : FlutterListView(
                       delegate: FlutterListViewDelegate(
-                        (BuildContext context, int index) {
+                            (BuildContext context, int index) {
                           final message = _messages[index];
                           return MessageWidget(message: message);
                         },
                         childCount: _messages.length,
                         initIndex:
-                            _messages.length - 1, // Start at the last message
+                        _messages.length - 1, // Start at the last message
                         initOffset: 0,
                         initOffsetBasedOnBottom: true, // Scroll to the bottom
                       ),
