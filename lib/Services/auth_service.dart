@@ -5,22 +5,25 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthenticationService {
   // TODO: change to actual host
-  static const String _baseUrl = 'http://10.0.2.2:3000/api/auth';
+  static const String _baseUrl = 'http://10.0.2.2:3000/api';
   final _storage = const FlutterSecureStorage();
 
   Future<bool> signIn(String email, String password) async {
+    //debug code
+    print('doing sign in');
+    //end of debug code
     final requestBody = jsonEncode({
       'email': email,
       'password': password,
     });
 
     final response = await http.post(
-      Uri.parse('$_baseUrl/login'),
+      Uri.parse('$_baseUrl/auth/login'),
       headers: {'Content-Type': 'application/json'},
       body: requestBody,
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode >= 200) {
       final jsonResponse = jsonDecode(response.body);
       final token = jsonResponse['token'];
       final user = jsonResponse['user'];
@@ -36,7 +39,7 @@ class AuthenticationService {
         },
       );
 
-      if (settingsResponse.statusCode == 200) {
+      if (settingsResponse.statusCode >= 200 && settingsResponse.statusCode <= 300) {
         final settingsJson = jsonDecode(settingsResponse.body);
         final theme = settingsJson['theme'];
         await _storage.write(key: 'theme', value: theme);
@@ -58,5 +61,7 @@ class AuthenticationService {
     await _storage.delete(key: 'user'); // Clear the user object
     await _storage.delete(key: 'theme'); // Clear the theme preference
     // Clear any other user-related data from storage
+
+
   }
 }

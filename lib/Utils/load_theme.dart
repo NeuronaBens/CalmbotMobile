@@ -5,7 +5,9 @@ import '../constants.dart';
 Future<ThemeData> loadTheme() async {
   final FlutterSecureStorage _storage = FlutterSecureStorage();
   final themeString = await _storage.read(key: 'theme');
-  print('Loaded theme: $themeString');
+  //debug code
+
+  //end of debug code
   if (themeString == 'Oscuro') {
     return ThemeData(
       scaffoldBackgroundColor: const Color(0xFF1F2128),
@@ -34,6 +36,9 @@ Future<ThemeData> loadTheme() async {
         labelStyle: TextStyle(
           fontSize: 18.0,
           color: kPrimaryColor,
+        ),
+        hintStyle: TextStyle(
+          color: Colors.white,
         ),
       ),
     );

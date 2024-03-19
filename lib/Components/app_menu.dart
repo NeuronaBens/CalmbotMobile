@@ -118,8 +118,6 @@ class DisplayableMenu extends StatelessWidget {
                   onPressed: () async {
                     final authService = AuthenticationService();
                     await authService.logout();
-                    // Navigate to the login screen
-                    SystemNavigator.pop();
                     // ignore: use_build_context_synchronously
                     Navigator.push(
                       context,

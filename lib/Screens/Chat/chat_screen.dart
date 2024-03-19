@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Screens/Login/login_screen.dart';
+import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import '../../Components/app_menu.dart';
 import '../../Components/message_widget.dart';
 import '../../Models/message.dart';
@@ -37,7 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return const ChatScreen();
+            return const WelcomeScreen();
           },
         ),
       );
