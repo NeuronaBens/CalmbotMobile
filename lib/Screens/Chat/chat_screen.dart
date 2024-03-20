@@ -5,8 +5,8 @@ import '../../Models/message.dart';
 import '../../Services/auth_service.dart';
 import '../../Services/chat_service.dart';
 import '../../Utils/load_theme.dart';
-import 'message_list.dart';
-import 'input_field.dart';
+import 'Components/message_list.dart';
+import 'Components/input_field.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
