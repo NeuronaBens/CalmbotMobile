@@ -118,12 +118,12 @@ class DisplayableMenu extends StatelessWidget {
                     final authService = AuthenticationService();
                     await authService.logout();
                     // ignore: use_build_context_synchronously
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const LoginScreen(),
                         maintainState: false,
-                      ),
+                      ), ModalRoute.withName("/Home")
                     );
                   },
                 ),
