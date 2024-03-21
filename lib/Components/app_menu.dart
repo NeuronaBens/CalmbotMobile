@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../Screens/Chat/chat_screen.dart';
@@ -121,7 +122,7 @@ class DisplayableMenu extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
+                        builder: (context) => const WelcomeScreen(),
                         maintainState: false,
                       ), ModalRoute.withName("/Home")
                     );

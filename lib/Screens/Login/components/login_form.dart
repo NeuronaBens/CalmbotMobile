@@ -39,13 +39,14 @@ class _LoginFormState extends State<LoginForm> {
     if (isAuthenticated) {
       // Navigate to the desired screen (e.g., ChatScreen)
       // ignore: use_build_context_synchronously
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) {
             return const ChatScreen();
           },
         ),
+        ModalRoute.withName("/chat"),
       );
     } else {
       // Show an error message
