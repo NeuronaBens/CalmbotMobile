@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/constants.dart';
 import '../Models/message.dart';
+import '../Services/bad_message_service.dart';
 import '../Services/bookmarked_service.dart';
 
 class MessageWidget extends StatelessWidget {
@@ -59,10 +60,6 @@ class MessageWidget extends StatelessWidget {
                         value: 2,
                         child: Text("Eliminar"),
                       ),
-                      const PopupMenuItem(
-                        value: 3,
-                        child: Text("Reportar"),
-                      ),
                     ],
                     onSelected: (value) async {
                       // Handle selected menu item
@@ -73,9 +70,7 @@ class MessageWidget extends StatelessWidget {
                           break;
                         case 2:
                         // Implement "Eliminar" functionality
-                          break;
-                        case 3:
-                        // Implement "Reportar" functionality
+                          await BadMessageService().deleteMessage(message.id);
                           break;
                       }
                     },
