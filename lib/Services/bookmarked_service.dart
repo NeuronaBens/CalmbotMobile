@@ -26,4 +26,30 @@ class BookmarkedMessageService {
 
     return [];
   }
+
+  Future<void> toggleBookmark(String messageId) async {
+    final token = await _storage.read(key: 'token');
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/database/messages/$messageId'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      final message = jsonDecode(response.body);
+      final updatedMessage = {...message, 'bookmarked': !message['bookmarked']};
+
+      final updateResponse = await http.put(
+        Uri.parse('$_baseUrl/database/messages/$messageId'),
+        headers: {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'},
+        body: jsonEncode(updatedMessage),
+      );
+
+      if (updateResponse.statusCode != 200) {
+        throw Exception('Failed to toggle bookmark');
+      }
+    } else {
+      throw Exception('Failed to fetch message');
+    }
+  }
 }
