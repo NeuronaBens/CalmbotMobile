@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 
 class SettingsComplete {
   final String studentId;
@@ -146,7 +146,7 @@ class Settings {
 }
 
 class SettingsService {
-  static const String _baseUrl = 'http://10.0.2.2:3000/api';
+  static final String? _baseUrl = dotenv.env['API_BASE_URL'];
   final _storage = const FlutterSecureStorage();
 
   Future<SettingsComplete> getSettingsRelatedMobile() async {
@@ -156,7 +156,8 @@ class SettingsService {
     final studentId = user['id'];
 
     final response = await http.get(
-      Uri.parse('$_baseUrl/database/students/$studentId/get-settings-related-mobile'),
+      Uri.parse(
+          '$_baseUrl/database/students/$studentId/get-settings-related-mobile'),
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -167,16 +168,15 @@ class SettingsService {
 
     throw Exception('Failed to load settings');
   }
+
   Future<void> updateStudentDescription(String description) async {
     final token = await _storage.read(key: 'token');
     final userJson = await _storage.read(key: 'user');
     final user = jsonDecode(userJson!);
     final studentId = user['id'];
 
-    final body = jsonEncode({
-      'student_id': studentId,
-      'description': description
-    });
+    final body =
+        jsonEncode({'student_id': studentId, 'description': description});
 
     final response = await http.put(
       Uri.parse('$_baseUrl/database/students/$studentId'),
@@ -187,16 +187,14 @@ class SettingsService {
       body: body,
     );
   }
+
   Future<void> updateTheme(String settingsId, String theme) async {
     final token = await _storage.read(key: 'token');
     final userJson = await _storage.read(key: 'user');
     final user = jsonDecode(userJson!);
     final studentId = user['id'];
 
-    final body = jsonEncode({
-      'id': settingsId,
-      'theme': theme
-    });
+    final body = jsonEncode({'id': settingsId, 'theme': theme});
 
     final response = await http.put(
       Uri.parse('$_baseUrl/database/students/$studentId/settings'),

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthenticationService {
-  // TODO: change to actual host
-  static const String _baseUrl = 'http://10.0.2.2:3000/api';
+  static final String? _baseUrl = dotenv.env['API_BASE_URL'];
   final _storage = const FlutterSecureStorage();
 
   Future<bool> signIn(String email, String password) async {
@@ -39,7 +39,8 @@ class AuthenticationService {
         },
       );
 
-      if (settingsResponse.statusCode >= 200 && settingsResponse.statusCode <= 300) {
+      if (settingsResponse.statusCode >= 200 &&
+          settingsResponse.statusCode <= 300) {
         final settingsJson = jsonDecode(settingsResponse.body);
         final theme = settingsJson['theme'];
         await _storage.write(key: 'theme', value: theme);
@@ -61,7 +62,5 @@ class AuthenticationService {
     await _storage.delete(key: 'user'); // Clear the user object
     await _storage.delete(key: 'theme'); // Clear the theme preference
     // Clear any other user-related data from storage
-
-
   }
 }

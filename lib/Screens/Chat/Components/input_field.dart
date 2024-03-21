@@ -1,7 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-import 'package:speech_to_text/speech_to_text.dart';
 
 class InputField extends StatefulWidget {
   final Function(String) onSendMessage;
@@ -72,7 +71,7 @@ class _InputFieldState extends State<InputField> {
         _speech.listen(
           localeId: 'es-ES', // Set the language to Spanish (Spain)
           listenFor: const Duration(seconds: 30),
-          pauseFor: const Duration(seconds: 3), 
+          pauseFor: const Duration(seconds: 3),
           onResult: (val) => setState(() {
             textController.text = val.recognizedWords;
             if (val.hasConfidenceRating && val.confidence > 0) {

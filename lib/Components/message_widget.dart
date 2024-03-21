@@ -17,14 +17,16 @@ class MessageWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         constraints: BoxConstraints(
           maxWidth:
-          MediaQuery.of(context).size.width * 0.75, // 2/3 of screen width
+              MediaQuery.of(context).size.width * 0.75, // 2/3 of screen width
         ),
         decoration: BoxDecoration(
-          color: message.sender ? kPrimaryColor.withOpacity(0.75) : Colors.grey[300],
+          color: message.sender
+              ? kPrimaryColor.withOpacity(0.75)
+              : Colors.grey[300],
           borderRadius: BorderRadius.circular(16.0),
         ),
         child: Text(
-          message.text ?? '', // Use an empty string if message.text is null
+          message.text, // Use an empty string if message.text is null
           style: TextStyle(
             color: message.sender ? Colors.white : Colors.black,
           ),
