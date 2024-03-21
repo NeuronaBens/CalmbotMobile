@@ -47,7 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _fetchMessages() async {
     final messages = await _chatService.fetchMessages();
     setState(() {
-      _messages = messages;
+      _messages = messages.length > 30 ? messages.sublist(messages.length - 30) : messages;
       _isLoading = false;
     });
   }
@@ -76,6 +76,9 @@ class _ChatScreenState extends State<ChatScreen> {
     machineMessageFuture.then((machineMessage) {
       setState(() {
         _messages.add(machineMessage);
+        if (_messages.length > 30) {
+          _messages = _messages.sublist(_messages.length - 30);
+        }
       });
     });
   }
