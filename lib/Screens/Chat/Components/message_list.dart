@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_list_view/flutter_list_view.dart';
-import '../../../Components/message_widget.dart';
+import 'message_widget.dart';
 import '../../../Models/message.dart';
 
 class MessageList extends StatelessWidget {
