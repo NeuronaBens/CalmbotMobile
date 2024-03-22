@@ -35,19 +35,17 @@ class BadMessageService {
     }
   }
 
-  /*
-  Future<void> reportMessage(String messageId, String reason) async {
+  Future<void> reportMessage(String messageId, String content) async {
     final token = await _storage.read(key: 'token');
 
     final response = await http.post(
-      Uri.parse('$_baseUrl/database/messages/$messageId/report'),
+      Uri.parse('$_baseUrl/database/complaints'),
       headers: {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'},
-      body: jsonEncode({'reason': reason}),
+      body: jsonEncode({'content': content, 'message_id': messageId}),
     );
 
     if (response.statusCode != 200) {
       throw Exception('Failed to report message');
     }
   }
-   */
 }

@@ -37,7 +37,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       future: loadTheme(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.only(bottom: 100.0), // Adjust as needed
+            child: const CircularProgressIndicator(),
+          );
         } else if (snapshot.hasError) {
           return Text('Error loading theme: ${snapshot.error}');
         } else {

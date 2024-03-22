@@ -11,6 +11,53 @@ class MessageWidget extends StatelessWidget {
 
   MessageWidget({super.key, required this.message});
 
+  Future<void> _showReportDialog(BuildContext context, String messageId) async {
+    String reportReason = '';
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Reportar Mensaje',
+            style: TextStyle(color: Colors.black),
+          ),
+          content: TextField(
+            onChanged: (value) {
+              reportReason = value;
+            },
+            decoration: const InputDecoration(
+              hintText: 'Explica el problema...',
+              hintStyle: TextStyle(color: Colors.black54),
+            ),
+            style: const TextStyle(color: Colors.black),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                await BadMessageService().reportMessage(messageId, reportReason);
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Enviar',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -60,6 +107,10 @@ class MessageWidget extends StatelessWidget {
                         value: 2,
                         child: Text("Eliminar"),
                       ),
+                      const PopupMenuItem(
+                        value: 3,
+                        child: Text("Reportar"),
+                      ),
                     ],
                     onSelected: (value) async {
                       // Handle selected menu item
@@ -71,6 +122,10 @@ class MessageWidget extends StatelessWidget {
                         case 2:
                         // Implement "Eliminar" functionality
                           await BadMessageService().deleteMessage(message.id);
+                          break;
+                        case 3:
+                        // Implement "Reportar" functionality
+                          await _showReportDialog(context, message.id);
                           break;
                       }
                     },
