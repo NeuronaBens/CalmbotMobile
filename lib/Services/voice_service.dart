@@ -5,20 +5,17 @@ import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 
 class VoiceService {
-  final String _apiKey = dotenv.env['OPENAI_API_KEY']!;
+  final String _baseUrl = dotenv.env['API_BASE_URL']!;
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   Future<void> textToSpeech(String text) async {
     final response = await http.post(
-      Uri.parse('https://api.openai.com/v1/audio/speech'),
+      Uri.parse('$_baseUrl/voice'),
       headers: {
-        'Authorization': 'Bearer $_apiKey',
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'model': 'tts-1',
-        'input': text,
-        'voice': 'alloy',
+        'text': text,
       }),
     );
 
