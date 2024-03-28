@@ -93,7 +93,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   child: TextField(
                                     controller: _descriptionController,
                                     decoration: const InputDecoration(
-                                      labelText: 'Description',
+                                      labelText: 'Descripción',
                                     ),
                                     onChanged: (value) {
                                       settingsComplete.description = value;
@@ -115,23 +115,23 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                             ),
                             const SizedBox(height: 16.0),
                             Text(
-                              'Date of Birth: ${DateFormat('yyyy-MM-dd').format(settingsComplete.dateOfBirth)}',
+                              'Fecha de Nacimiento: ${DateFormat('yyyy-MM-dd').format(settingsComplete.dateOfBirth)}',
                               style: const TextStyle(fontSize: 16),
                             ),
                             const SizedBox(height: 16.0),
                             Text(
-                              'Sex: ${settingsComplete.sex.name}',
+                              'Genero: ${settingsComplete.sex.name}',
                               style: const TextStyle(fontSize: 16),
                             ),
                             const SizedBox(height: 16.0),
                             Text(
-                              'Career: ${settingsComplete.career.name}',
+                              'Carrera: ${settingsComplete.career.name}',
                               style: const TextStyle(fontSize: 16),
                             ),
                             const SizedBox(height: 16.0),
                             SwitchListTile(
                               title: const Text(
-                                'Theme',
+                                'Tema',
                                 style: TextStyle(color: kPrimaryColor),
                               ),
                               value:

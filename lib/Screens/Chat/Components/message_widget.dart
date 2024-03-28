@@ -65,9 +65,12 @@ class MessageWidgetState extends State<MessageWidget> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  IconButton(
-                    icon: Icon(_isSpeaking ? Icons.stop : Icons.play_arrow),
-                    onPressed: _toggleSpeech,
+                  Semantics(
+                    label: _isSpeaking ? 'Stop Playback' : 'Play Message',
+                    child: IconButton(
+                      icon: Icon(_isSpeaking ? Icons.stop : Icons.play_arrow),
+                      onPressed: _toggleSpeech,
+                    ),
                   ),
                   PopupMenuButton(
                     itemBuilder: (context) => [
