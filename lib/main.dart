@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         if (snapshot.hasData) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Calmbot',
+            title: 'Calmy',
             theme: snapshot.data, // Apply the loaded theme
             home: const WelcomeScreen(),
           );

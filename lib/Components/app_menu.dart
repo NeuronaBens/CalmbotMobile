@@ -36,7 +36,7 @@ class DisplayableMenu extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  '     Calmbot     ',
+                  '     Calmy     ',
                   style: TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 8),
@@ -119,15 +119,15 @@ class DisplayableMenu extends StatelessWidget {
                     await authService.logout();
                     // ignore: use_build_context_synchronously
                     Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WelcomeScreen(),
-                        maintainState: false,
-                      ), ModalRoute.withName("/Home")
-                    );
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const WelcomeScreen(),
+                          maintainState: false,
+                        ),
+                        ModalRoute.withName("/Home"));
                   },
                 ),
-                const Text('Calmbot - v1.0.0'),
+                const Text('Calmy - v1.0.0'),
               ],
             ),
           ),

@@ -22,33 +22,51 @@ class _LoginFormState extends State<LoginForm> {
     final email = _emailController.text;
     final password = _passwordController.text;
 
-    final isAuthenticated = await _authService.signIn(email, password);
+    try {
+      final isAuthenticated = await _authService.signIn(email, password);
 
-    if (isAuthenticated) {
-      // Run the weekly resets before navigating to the chat screen
-      final weeklyResetsService = WeeklyResetsService();
-      await weeklyResetsService.resetWeeklyTasks();
-      await weeklyResetsService.resetWeeklySummary();
+      if (isAuthenticated) {
+        // Run the weekly resets before navigating to the chat screen
+        final weeklyResetsService = WeeklyResetsService();
+        await weeklyResetsService.resetWeeklyTasks();
+        await weeklyResetsService.resetWeeklySummary();
 
-      // Navigate to the desired screen (e.g., ChatScreen)
-      // ignore: use_build_context_synchronously
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return const ChatScreen();
-          },
-        ),
-        ModalRoute.withName("/chat"),
-      );
-    } else {
-      // Show an error message
+        // Navigate to the desired screen (e.g., ChatScreen)
+        // ignore: use_build_context_synchronously
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const ChatScreen();
+            },
+          ),
+          ModalRoute.withName("/chat"),
+        );
+      } else {
+        // Show an error message
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Email o Contraseña Inválidos'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      // Handle network-related errors
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Invalid email or password'),
+          title: const Text('Error de Autenticación'),
+          content: const Text('Las credenciales ingresadas no son válidas.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),

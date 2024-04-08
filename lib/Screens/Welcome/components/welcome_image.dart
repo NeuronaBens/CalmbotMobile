@@ -20,21 +20,21 @@ class WelcomeImage extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 36,
-                  color: Colors.black, // Set the color for the first part of the text
+                  color: Colors
+                      .black, // Set the color for the first part of the text
                 ),
               ),
               TextSpan(
-                text: "Calmbot",
+                text: "Calmy",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 36,
-                  color: Color(0xFF7A72DE), // Set the color for "Calmbot"
+                  color: Color(0xFF7A72DE), // Set the color for "Calmy"
                 ),
               ),
             ],
           ),
         ),
-
         const SizedBox(height: defaultPadding),
         const Text(
           "Tu chatbot basado en inteligencia artificial para el manejo del estrés y la ansiedad",
@@ -53,8 +53,10 @@ class WelcomeImage extends StatelessWidget {
               flex: 8,
               child: SvgPicture.asset(
                 "assets/icons/logo.svg",
-                width: MediaQuery.of(context).size.width * 0.4, // Adjust the percentage as needed
-                height: MediaQuery.of(context).size.width * 0.4, // Adjust the percentage as needed
+                width: MediaQuery.of(context).size.width *
+                    0.4, // Adjust the percentage as needed
+                height: MediaQuery.of(context).size.width *
+                    0.4, // Adjust the percentage as needed
               ),
             ),
             const Spacer(),
