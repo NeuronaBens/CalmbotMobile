@@ -56,33 +56,30 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Bienvenido a ',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).textTheme.bodyText1?.color,
                               ),
-                              Text(
-                                'Tus Notificaciones',
-                                style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
+                              children: const [
+                                TextSpan(text: 'Bienvenido a '),
+                                TextSpan(
+                                  text: 'Tus Notificaciones',
+                                  style: TextStyle(color: kPrimaryColor),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          SizedBox(height: 8),
-                          Text(
+                          const SizedBox(height: 8),
+                          const Text(
                             'Aquí podrás ver y gestionar las notificaciones que has recibido.',
                             style: TextStyle(
                               fontSize: 14,
