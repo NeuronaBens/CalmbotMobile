@@ -3,8 +3,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../constants.dart';
 
 Future<ThemeData> loadTheme() async {
-  final FlutterSecureStorage _storage = FlutterSecureStorage();
-  final themeString = await _storage.read(key: 'theme');
+  const FlutterSecureStorage storage = FlutterSecureStorage();
+  final themeString = await storage.read(key: 'theme');
   //debug code
 
   //end of debug code

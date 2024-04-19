@@ -3,6 +3,7 @@ import 'package:intl/intl.dart'; // Add this import
 import '../../Services/settings_service.dart';
 import '../../Utils/load_theme.dart';
 import '../../constants.dart';
+import '../Chat/chat_screen.dart';
 
 class ConfigurationScreen extends StatefulWidget {
   const ConfigurationScreen({Key? key}) : super(key: key);
@@ -134,8 +135,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                 'Tema',
                                 style: TextStyle(color: kPrimaryColor),
                               ),
-                              value:
-                                  settingsComplete.settings.theme == 'Oscuro',
+                              value: settingsComplete.settings.theme == 'Oscuro',
                               onChanged: (value) async {
                                 final newTheme = value ? 'Oscuro' : 'Claro';
                                 settingsComplete.settings.theme = newTheme;
@@ -143,6 +143,12 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                     settingsComplete.settings.id, newTheme);
                                 print('Theme updated to: $newTheme');
                                 setState(() {});
+
+                                // Navigate to the chat screen
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ChatScreen()),
+                                );
                               },
                             ),
                           ],
