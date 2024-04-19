@@ -9,21 +9,29 @@ class VoiceService {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   Future<void> textToSpeech(String text) async {
-    final response = await http.post(
-      Uri.parse('$_baseUrl/voice'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'text': text,
-      }),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('$_baseUrl/voice'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'text': text,
+        }),
+      );
 
-    if (response.statusCode == 200) {
-      final bytes = response.bodyBytes;
-      await _audioPlayer.setAudioSource(MyCustomSource(bytes));
-      await _audioPlayer.play();
-    } else {
+      if (response.statusCode == 200) {
+        final bytes = response.bodyBytes;
+        await _audioPlayer.setAudioSource(MyCustomSource(bytes));
+        await _audioPlayer.play();
+      } else {
+        print('HTTP Error: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+        throw Exception('Failed to convert text to speech');
+      }
+    } catch (e, stackTrace) {
+      print('Error: $e');
+      print('Stack Trace: $stackTrace');
       throw Exception('Failed to convert text to speech');
     }
   }
