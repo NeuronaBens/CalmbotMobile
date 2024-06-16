@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../Services/auth_service.dart';
 import '../../../constants.dart';
+import '../../Chat/chat_screen.dart';
 import '../../Login/login_screen.dart';
 import '../../Signup/signup_screen.dart';
 
@@ -14,18 +16,35 @@ class LoginAndSignupBtn extends StatelessWidget {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return const LoginScreen();
-                },
-              ),
-            );
+          onPressed: () async {
+            final isAuthenticated = await AuthenticationService().isAuthenticated();
+            if (isAuthenticated) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const ChatScreen();
+                  },
+                ),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const LoginScreen();
+                  },
+                ),
+              );
+            }
           },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kPrimaryColor,
+            elevation: 0,
+          ),
           child: Text(
-            "Login".toUpperCase(),
+            "Sign In".toUpperCase(),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
         const SizedBox(height: 16),

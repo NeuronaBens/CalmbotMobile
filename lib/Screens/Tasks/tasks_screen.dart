@@ -68,7 +68,7 @@ class _TasksScreenState extends State<TasksScreen> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'Aquí podrás ver y completar las tareas que Calmbot te sugiere realizar para mejorar tu estado de animo.',
+                          'Aquí podrás ver y completar las tareas que Calmy te sugiere realizar para mejorar tu estado de animo.',
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -88,10 +88,13 @@ class _TasksScreenState extends State<TasksScreen> {
                     child: FutureBuilder<List<StudentTask>>(
                       future: _studentTasksFuture,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
                         } else if (snapshot.hasData) {
                           final studentTasks = snapshot.data!;
                           // ...
@@ -102,36 +105,48 @@ class _TasksScreenState extends State<TasksScreen> {
                               final task = studentTask.task;
                               final isCompleted = studentTask.completed == 1;
                               return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 16.0),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: isCompleted ? Colors.white : kPrimaryColor.withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(10.0), // Adjust the radius value as needed
+                                    color: isCompleted
+                                        ? Colors.white
+                                        : kPrimaryColor.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(
+                                        10.0), // Adjust the radius value as needed
                                   ),
                                   child: ListTile(
                                     title: Text(
                                       task.name,
                                       style: TextStyle(
-                                        color: isCompleted ? Colors.black : Colors.white,
+                                        color: isCompleted
+                                            ? Colors.black
+                                            : Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     subtitle: Text(
                                       task.content,
                                       style: TextStyle(
-                                        color: isCompleted ? Colors.black : Colors.white,
+                                        color: isCompleted
+                                            ? Colors.black
+                                            : Colors.white,
                                       ),
                                     ),
                                     trailing: Checkbox(
                                       value: isCompleted,
                                       side: MaterialStateBorderSide.resolveWith(
-                                            (states) => const BorderSide(width: 1.0, color: Colors.white),
+                                        (states) => const BorderSide(
+                                            width: 1.0, color: Colors.white),
                                       ),
                                       onChanged: (value) {
                                         setState(() {
-                                          studentTask.completed = value! ? 1 : 0;
+                                          studentTask.completed =
+                                              value! ? 1 : 0;
                                         });
-                                        _tasksService.updateTaskCompletion(studentTask.id, studentTask.completed);
+                                        _tasksService.updateTaskCompletion(
+                                            studentTask.id,
+                                            studentTask.completed);
                                       },
                                     ),
                                   ),
@@ -141,7 +156,8 @@ class _TasksScreenState extends State<TasksScreen> {
                           );
                           // ...
                         } else {
-                          return const Center(child: Text('No tasks available'));
+                          return const Center(
+                              child: Text('No tasks available'));
                         }
                       },
                     ),
@@ -154,5 +170,4 @@ class _TasksScreenState extends State<TasksScreen> {
       },
     );
   }
-
 }

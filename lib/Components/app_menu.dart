@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../Screens/Chat/chat_screen.dart';
 import '../Screens/Configuration/configuration_screen.dart';
 import '../Screens/Favorites/favorites_screen.dart';
-import '../Screens/Login/login_screen.dart';
 import '../Screens/Notifications/notification_screen.dart';
 import '../Screens/Tasks/tasks_screen.dart';
 import '../Services/auth_service.dart';
@@ -37,7 +36,7 @@ class DisplayableMenu extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  '     Calmbot     ',
+                  '     Calmy     ',
                   style: TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 8),
@@ -118,19 +117,17 @@ class DisplayableMenu extends StatelessWidget {
                   onPressed: () async {
                     final authService = AuthenticationService();
                     await authService.logout();
-                    // Navigate to the login screen
-                    SystemNavigator.pop();
                     // ignore: use_build_context_synchronously
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                        maintainState: false,
-                      ),
-                    );
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const WelcomeScreen(),
+                          maintainState: false,
+                        ),
+                        ModalRoute.withName("/Home"));
                   },
                 ),
-                const Text('Calmbot - v1.0.0'),
+                const Text('Calmy - v1.0.0'),
               ],
             ),
           ),

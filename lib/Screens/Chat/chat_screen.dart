@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_auth/constants.dart';
+import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import '../../Components/app_menu.dart';
-import '../../Components/message_widget.dart';
 import '../../Models/message.dart';
 import '../../Services/auth_service.dart';
 import '../../Services/chat_service.dart';
 import '../../Utils/load_theme.dart';
+import 'Components/message_list.dart';
+import 'Components/input_field.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _ChatScreenState createState() => _ChatScreenState();
 }
 
@@ -20,7 +19,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Message> _messages = [];
   final _authService = AuthenticationService();
   final _chatService = ChatService();
-  final ScrollController _scrollController = ScrollController();
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -32,18 +31,15 @@ class _ChatScreenState extends State<ChatScreen> {
     final isAuthenticated = await _authService.isAuthenticated();
 
     if (!isAuthenticated) {
-      // Navigate to the login screen or show an error message
-      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) {
-            return const ChatScreen();
+            return const WelcomeScreen();
           },
         ),
       );
     } else {
-      // Fetch existing messages from the last session
       await _fetchMessages();
     }
   }
@@ -51,23 +47,40 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _fetchMessages() async {
     final messages = await _chatService.fetchMessages();
     setState(() {
-      _messages = messages;
+      _messages = messages.length > 30 ? messages.sublist(messages.length - 30) : messages;
+      _isLoading = false;
     });
   }
 
   Future<void> _sendMessage(String text) async {
-    final message = await _chatService.sendMessage(text);
-    setState(() {
-      _messages.add(message);
-    });
-  }
+    final lastMessage = _messages.isNotEmpty ? _messages.last : null;
 
-  void _scrollToBottom() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(seconds: 1),
-      curve: Curves.easeOut,
+    final userMessage = Message(
+      id: 'MSG-${DateTime.now().millisecondsSinceEpoch}',
+      text: text,
+      session: lastMessage != null ? lastMessage.session : 1,
+      position: lastMessage != null ? lastMessage.position + 1 : 0,
+      sender: true,
+      deleted: false,
+      bookmarked: false,
+      dateSend: DateTime.now(),
+      studentId: 'USR-${DateTime.now().millisecondsSinceEpoch}',
     );
+
+    setState(() {
+      _messages.add(userMessage);
+    });
+
+    final machineMessageFuture = _chatService.sendMessage(text);
+
+    machineMessageFuture.then((machineMessage) {
+      setState(() {
+        _messages.add(machineMessage);
+        if (_messages.length > 30) {
+          _messages = _messages.sublist(_messages.length - 30);
+        }
+      });
+    });
   }
 
   @override
@@ -88,63 +101,16 @@ class _ChatScreenState extends State<ChatScreen> {
                 title: const Text('Chat'),
               ),
               drawer: const DisplayableMenu(),
-              floatingActionButton: FloatingActionButton(
-                onPressed: _scrollToBottom,
-                child: const Icon(Icons.arrow_downward),
-                mini: true,
-                shape: const CircleBorder(),
-                backgroundColor: kPrimaryColor,
-                foregroundColor: kPrimaryLightColor,
-              ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
               body: Column(
                 children: [
-                  Expanded(
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: _messages.length,
-                      itemBuilder: (context, index) {
-                        final message = _messages[index];
-                        return MessageWidget(message: message);
-                      },
-                    ),
-                  ),
-                  _buildInputField(),
+                  MessageList(messages: _messages, isLoading: _isLoading),
+                  InputField(onSendMessage: _sendMessage),
                 ],
               ),
             ),
           );
         }
       },
-    );
-  }
-
-  Widget _buildInputField() {
-    final textController = TextEditingController();
-
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: textController,
-              decoration: const InputDecoration(
-                hintText: 'Type your message...',
-              ),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: () async {
-              if (textController.text.isNotEmpty) {
-                await _sendMessage(textController.text);
-                textController.clear();
-              }
-            },
-          ),
-        ],
-      ),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart'; // Add this import
 import '../../Services/settings_service.dart';
 import '../../Utils/load_theme.dart';
 import '../../constants.dart';
+import '../Chat/chat_screen.dart';
 
 class ConfigurationScreen extends StatefulWidget {
   const ConfigurationScreen({Key? key}) : super(key: key);
@@ -93,7 +94,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   child: TextField(
                                     controller: _descriptionController,
                                     decoration: const InputDecoration(
-                                      labelText: 'Description',
+                                      labelText: 'Descripción',
                                     ),
                                     onChanged: (value) {
                                       settingsComplete.description = value;
@@ -115,27 +116,26 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                             ),
                             const SizedBox(height: 16.0),
                             Text(
-                              'Date of Birth: ${DateFormat('yyyy-MM-dd').format(settingsComplete.dateOfBirth)}',
+                              'Fecha de Nacimiento: ${DateFormat('yyyy-MM-dd').format(settingsComplete.dateOfBirth)}',
                               style: const TextStyle(fontSize: 16),
                             ),
                             const SizedBox(height: 16.0),
                             Text(
-                              'Sex: ${settingsComplete.sex.name}',
+                              'Genero: ${settingsComplete.sex.name}',
                               style: const TextStyle(fontSize: 16),
                             ),
                             const SizedBox(height: 16.0),
                             Text(
-                              'Career: ${settingsComplete.career.name}',
+                              'Carrera: ${settingsComplete.career.name}',
                               style: const TextStyle(fontSize: 16),
                             ),
                             const SizedBox(height: 16.0),
                             SwitchListTile(
                               title: const Text(
-                                'Theme',
+                                'Tema',
                                 style: TextStyle(color: kPrimaryColor),
                               ),
-                              value:
-                                  settingsComplete.settings.theme == 'Oscuro',
+                              value: settingsComplete.settings.theme == 'Oscuro',
                               onChanged: (value) async {
                                 final newTheme = value ? 'Oscuro' : 'Claro';
                                 settingsComplete.settings.theme = newTheme;
@@ -143,6 +143,12 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                     settingsComplete.settings.id, newTheme);
                                 print('Theme updated to: $newTheme');
                                 setState(() {});
+
+                                // Navigate to the chat screen
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ChatScreen()),
+                                );
                               },
                             ),
                           ],

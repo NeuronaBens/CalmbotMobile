@@ -86,14 +86,17 @@ class FavoritesScreenState extends State<FavoritesScreen> {
                     ),
                     Column(
                       children: [
-                        for (int index = 0; index < _bookmarkedMessages.length; index++)
+                        for (int index = 0;
+                            index < _bookmarkedMessages.length;
+                            index++)
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Align(
                               alignment: Alignment.center,
                               child: Container(
                                 constraints: BoxConstraints(
-                                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                                  maxWidth:
+                                      MediaQuery.of(context).size.width * 0.7,
                                 ),
                                 decoration: BoxDecoration(
                                   color: kPrimaryColor.withOpacity(0.75),
@@ -111,7 +114,7 @@ class FavoritesScreenState extends State<FavoritesScreen> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      'Enviado por: ${_bookmarkedMessages[index]['sender'] ? 'Tú' : 'Calmbot'}',
+                                      'Enviado por: ${_bookmarkedMessages[index]['sender'] ? 'Tú' : 'Calmy'}',
                                       style: const TextStyle(
                                         fontSize: 12,
                                         color: Colors.white70,
@@ -140,6 +143,4 @@ class FavoritesScreenState extends State<FavoritesScreen> {
       },
     );
   }
-
-
 }
